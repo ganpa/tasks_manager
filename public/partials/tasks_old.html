@@ -1,0 +1,66 @@
+<div class="container">
+  <div class="row">
+    <div class="col-sm-9 col-sm-offset-2">
+      <!-- <div class="panel panel-default"> -->
+        <!-- <div class="panel-heading"> Tasks List </div> -->
+      <table class="table table-condensed">
+        <tr>
+          <th> Task # </th>
+          <th> Assigned To </th>
+          <th> Topic </th>
+          <th> Due By </th>
+          <th> Status </th>
+        </tr>
+        <%@tasks.each do |task| %>
+        <tr id="<%=task.id%>" ng-init="task_id=<%=task.id%>">
+          <td id="<%=task.id%>"><a href="/tasks/<%=task.id%>">  <%=task.id %> </a></td>
+          <td> <%=task.assigned_to %> </td>
+          <td>  <%=task.topic%> </td>
+          <td> <%=task.due_by%> </td>
+          <td>
+            <% if (task.due_by - Date.current).to_i > 0 %>
+            <% status = "Completed" %>
+            <% action = "ReOpen" %>
+            <% button_type = "btn-success" %>
+            <% else %>
+            <% status = "Open" %>
+            <% action = "Mark Completed" %>
+            <% button_type = "btn-primary" %>
+            <% end %>
+            <div class="wrapper" id="{{task_id}}" ng-controller="TaskActionController" 
+              ng-init="completed=<%=status == 'Completed'%>"> 
+              <div class="btn-group" id="completed" ng-show="completed">
+                <button type="button" class="btn btn-success text-center btn-xs dropdown-toggle " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> 
+                  Completed <b class="caret"></b>
+                </button>
+                <!-- <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> -->
+                  <!-- <b class="caret"></b> -->
+                  <!-- <span class="sr-only">Toggle Dropdown</span> -->
+                <!-- </button> -->
+                <ul class="dropdown-menu">
+                  <li> 
+                    <button ng-click="setCompleted(task_id)" name="completed" class="btn btn-link btn-xs btn-block" type="submit"> Open </button>
+                  </li>
+                </ul>
+              </div>
+              <div class="btn-group ng-hide" id="open" ng-hide="completed">
+                <button type="button" class="btn btn-primary text-center btn-xs dropdown-toggle " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> 
+                  Open <b class="caret"></b>
+                </button>
+                <ul class="dropdown-menu">
+                  <li> 
+                    <label> Completion Date </label>
+                    <input type="date"> 
+                    <button ng-click="setCompleted(task_id)" name="completed" class="btn btn-link btn-xs btn-block" type="submit">  Completed</button>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </td>
+        </tr>
+        <% end %>
+      </table>
+      <!-- </div> -->
+    </div>
+  </div>
+</div>
