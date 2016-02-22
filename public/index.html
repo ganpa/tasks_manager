@@ -50,6 +50,24 @@
     </ul>
 
     <ul class="nav navbar-nav navbar-right">
+      <li role="presentation" class="dropdown"> 
+        <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" 
+        aria-haspopup="true"> Admin <b class="caret"></b></a>
+        <ul class="dropdown-menu">
+          <li>
+              <a href="#/locations/new"> 
+                <span class="glyphicon glyphicon-plus"></span> &nbsp;
+                Location 
+              </a>
+          </li>
+          <li>
+            <a href="#/employees/new"> 
+              <span class="glyphicon glyphicon-plus"></span> &nbsp;
+              Employee 
+            </a>
+          </li>
+        </ul>
+      </li>
       <li role="presentation" class=""> <a href="/"> User name </a></li>
       <li role="presentation" class=""> <a href="/"> logout </a></li>
     </ul>
@@ -59,6 +77,7 @@
 <div ng-view></div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+<script src="js/ng-file-upload.min.js"></script>
 <script src="js/custom.js"></script>
 </body>
 </html>

@@ -11,26 +11,33 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20160215114558) do
+ActiveRecord::Schema.define(:version => 20160222024730) do
 
   create_table "employees", :force => true do |t|
     t.string   "position"
     t.string   "name"
     t.integer  "total_score"
+    t.integer  "location_id"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
   end
 
+  create_table "locations", :force => true do |t|
+    t.string   "name"
+    t.string   "type"
+    t.string   "pin"
+    t.integer  "parent_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
   create_table "tasks", :force => true do |t|
-    t.integer  "number"
     t.string   "staff"
     t.string   "topic"
     t.date     "due_by"
-    t.date     "completed_by"
-    t.boolean  "completed"
-    t.text     "description"
+    t.date     "completed_on"
+    t.boolean  "is_completed"
     t.integer  "employee_id"
-    t.string   "assigned_to"
     t.datetime "created_at",   :null => false
     t.datetime "updated_at",   :null => false
   end

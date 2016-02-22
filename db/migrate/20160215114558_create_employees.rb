@@ -4,6 +4,7 @@ class CreateEmployees < ActiveRecord::Migration
       t.string :position
       t.string :name
       t.integer :total_score
+      t.integer :location_id
 
       t.timestamps
     end

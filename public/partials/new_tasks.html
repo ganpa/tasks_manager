@@ -11,8 +11,8 @@
    <form class="form-horizontal" ng-submit="send()">
     <div class="form-group line">
       <label class="col-sm-2 control-label">Staff</label>
-      <div class="col-sm-4">
-        <select  ng-model="staff" class="form-control">
+      <div class="col-sm-2">
+        <select  ng-model="task.staff" class="form-control">
           <option ng-repeat="_staff in staffs"> {{_staff}} </option>
         </select>
       </div>
@@ -21,7 +21,7 @@
     <div class="form-group line">
       <label for="topic" class="col-sm-2 control-label">Topic</label>
       <div class="col-sm-4">
-        <input type="text" ng-model="topic" name="topic" class="form-control" id="topic" placeholder="">
+        <input type="text" ng-model="task.topic" name="topic" class="form-control" id="topic" placeholder="">
       </div>
     </div>
 
@@ -32,10 +32,22 @@
       </div>
     </div>
 
-    <div class="form-group line">
-      <label for="file_no" class="col-sm-2 control-label"> File Number </label>
-      <div class="col-sm-4">
-        <input type="text" ng-model="file_no" class="form-control">
+    <div class="form-group" ng-repeat="num_file in num_files">
+      <label for="file_nos" class="col-sm-2 control-label"> File #{{$index+1}} </label>
+      <div class="col-sm-2" >
+        <div class="input-group" >
+        <input type="text"  ng-model="task.file_nums[$index]" class="form-control">
+          <span class="input-group-btn" ng-show="num_files[$index].show">
+            <button type="button" class="btn btn-default" ng-click="add_file()">
+              <span class="glyphicon glyphicon-plus"></span>
+            </button>
+          </span>
+          <span class="input-group-btn" ng-show="!num_files[$index].show">
+            <button type="button" class="btn btn-default" ng-click="remove_file($index)">
+              <span class="glyphicon glyphicon-minus"></span>
+            </button>
+          </span>
+        </div>
       </div>
     </div>
 
@@ -48,8 +60,8 @@
 
     <div class="form-group line">
       <label for="due_by" class="col-sm-2 control-label">Due By</label>
-      <div class="col-sm-4">
-        <input type="date" ng-model="due_by" name="due_by" class="form-control" id="" placeholder="">
+      <div class="col-sm-3">
+        <input type="date" ng-model="task.due_by" name="due_by" class="form-control" id="" placeholder="">
       </div>
     </div>
 
@@ -57,7 +69,7 @@
       <label for="assigned_to" class="col-sm-2 control-label">Assigned To</label>
       <div class="col-sm-4">
         <div class="input-group">
-          <input type="text" ng-model="employee.name" name="assigned_to" placeholder="Search..." class="form-control">
+          <input id="the-basics" type="text" ng-model="employee.name" name="assigned_to" placeholder="Search..." class="form-control typeahead">
           <!-- <div ng-show="!add_user" class="input-group-btn"> -->
           <span class="input-group-btn">
             <button type="button" class="btn btn-default" ng-click="add_user=true">
@@ -75,12 +87,12 @@
         </div>
       </div>
     </div>
-    <div class="row">
+    <div class="row form-group">
     <div class="col-sm-6 col-sm-offset-1 line">
     <div name="employee_form" class="panel panel-default" ng-show="add_user">
       <div class="panel-heading">
-        Employee Details
-        <button type="button" class="btn btn-default btn-sm pull-right" ng-click="add_user=false">
+        Assigned To
+        <button type="button" class="btn btn-default btn-sm pull-right" ng-click="remove_employee()">
           <span class="glyphicon glyphicon-remove"></span>
         </button>
       </div>
@@ -90,13 +102,19 @@
         <div class="form-group line">
         <label for="name" class="col-sm-3 control-label line"> Name </label>
         <div class="col-sm-6 line">
-          <input type="text" ng-model="employee.name" class="form-control">
+          <input type="text" ng-model="task.employee.name" class="form-control">
         </div>
         </div>
       <div class="form-group line" >
         <label for="position" class="col-sm-3 control-label line"> Position </label>
         <div class="col-sm-6 line">
-          <input type="text" ng-model="employee.position" class="form-control">
+          <input type="text" ng-model="task.employee.position" class="form-control">
+        </div>
+      </div>
+      <div class="form-group line" >
+        <label for="position" class="col-sm-3 control-label line"> Location </label>
+        <div class="col-sm-6 line">
+          <input type="text" ng-model="task.employee.location" class="form-control">
         </div>
       </div>
       </form>
@@ -107,7 +125,7 @@
     </div>
     <div class="form-group">
       <div class="col-sm-4 col-sm-offset-3">
-        <button type="submit" class="btn btn-primary"> Create </button>
+        <button type="button" ng-click="create(task)" class="btn btn-primary"> Create </button>
       </div>
     </div>
   </form>

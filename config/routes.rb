@@ -1,6 +1,8 @@
 SampleApp::Application.routes.draw do
 
-  resources :tasks
+  get "locations/types" => "locations#types"
+
+  resources :tasks, :locations, :employees
   #resource :home, :only => :index
   root :to => 'home#index'
 

@@ -1,0 +1,89 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-offset-3">
+      <form class="form-horizontal" ng-submit="send()"ng-init="init()" >
+        <div class="form-group">
+          <label for="Name" class="col-sm-2 control-label"> Name </label>
+          <div class="col-sm-4">
+            <input type="text" ng-model="name" name="name" class="form-control">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-2 control-label"> Position </label>
+          <div class="col-sm-4">
+            <select  ng-model="position" class="form-control" ng-change="position_select(position)">
+              <option ng-repeat=" _position in positions" value="{{_position}}"> 
+                {{_position}} 
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group" ng-show="position_num>=0">
+          <label for="" class="col-sm-2 control-label"> District </label>
+          <div class="col-sm-4">
+            <select  ng-model="district" class="form-control" ng-show="true">
+              <option ng-repeat=" _district in districts" value="{{_district}}"> 
+                {{_district}} 
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group" ng-show="position_num>=1">
+          <label for="" class="col-sm-2 control-label"> Division </label>
+          <div class="col-sm-4">
+            <select  ng-model="division" class="form-control" ng-show="true">
+              <option ng-repeat=" _division in divisions" value="{{_division}}"> 
+                {{_division}} 
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group" ng-show="position_num>=2">
+          <label for="" class="col-sm-2 control-label"> Taluk </label>
+          <div class="col-sm-4">
+            <select  ng-model="taluk" class="form-control" ng-show="true">
+              <option ng-repeat=" _taluk in taluks" value="{{_taluk}}"> 
+                {{_taluk}} 
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group" ng-show="position_num>=3">
+          <label for="" class="col-sm-2 control-label"> Zone </label>
+          <div class="col-sm-4">
+            <select  ng-model="zone" class="form-control" ng-show="true">
+              <option ng-repeat=" _zone in zones" value="{{_zone}}"> 
+                {{_zone}} 
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group" ng-show="position_num>=4">
+          <label for="" class="col-sm-2 control-label"> Firqha </label>
+          <div class="col-sm-4">
+            <select  ng-model="firqha" class="form-control" ng-show="true">
+              <option ng-repeat=" _firqha in firqhas" value="{{_firqha}}"> 
+                {{_firqha}} 
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group" ng-show="position_num==5">
+          <label for="" class="col-sm-2 control-label"> Village </label>
+          <div class="col-sm-4">
+            <select  ng-model="village" class="form-control" ng-show="true">
+              <option ng-repeat=" _village in villages" value="{{_village}}"> 
+                {{_village}} 
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-sm-4 col-sm-offset-3">
+            <button type="button" ng-click="create()" class="btn btn-primary"> Create </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
