@@ -6,6 +6,10 @@ class EmployeesController < ApplicationController
   def show
   end
 
+  def positions 
+    render :json => {"positions" => EmployeesHelper.get_positions}
+  end
+
   def create
     emp = Employee.new do |e|
       e.name = params[:name]
