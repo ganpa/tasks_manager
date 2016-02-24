@@ -24,11 +24,11 @@ ActiveRecord::Schema.define(:version => 20160222024730) do
 
   create_table "locations", :force => true do |t|
     t.string   "name"
-    t.string   "type"
+    t.string   "location_type"
     t.string   "pin"
     t.integer  "parent_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
   end
 
   create_table "tasks", :force => true do |t|
