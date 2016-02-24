@@ -1,4 +1,16 @@
 app.controller('LocationSelectController', ['$scope', 'LocationService', function($scope, LocationService){
+  
+  $scope.init_location_select = function(){
+
+    LocationService.get_location_types(function(location_types){
+      $scope.location_types = location_types;
+      $scope.location_type = $scope.location_types[0];
+      $scope.location_type_num = 0;
+      $scope.location_types_value = [];
+      console.log("location_types", $scope.location_types);
+    });
+  };
+
   $scope.location_type_value_select = function(index){
     if(($scope.location_type_num == index+1 && $scope.name == "location") || 
         $scope.location_type_num == index){
@@ -35,16 +47,10 @@ app.controller('NewLocationController', ['$scope', '$controller', '$location', '
 function($scope, $controller, $location, Upload, LocationService){
     
   $scope.init = function(){
-    LocationService.get_location_types(function(location_types){
-      $scope.name = "location";
-      $scope.location_types = location_types;
-      $scope.location_type = $scope.location_types[0];
-      $scope.location_type_num = 0;
-      $scope.location_types_value = [];
-
-    });
+    $scope.name = "location";
 
     $controller('LocationSelectController', {$scope: $scope});
+    $scope.init_location_select();
 
     $scope.input_type = "Default";
     $scope.input_bulk = false;
