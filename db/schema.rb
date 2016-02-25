@@ -38,6 +38,7 @@ ActiveRecord::Schema.define(:version => 20160222024730) do
     t.date     "completed_on"
     t.boolean  "is_completed"
     t.integer  "employee_id"
+    t.integer  "location_id"
     t.datetime "created_at",   :null => false
     t.datetime "updated_at",   :null => false
   end

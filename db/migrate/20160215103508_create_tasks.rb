@@ -7,6 +7,7 @@ class CreateTasks < ActiveRecord::Migration
       t.date :completed_on
       t.boolean :is_completed
       t.integer :employee_id
+      t.integer :location_id
 
       t.timestamps
       #add_index :tasks, :employee_id

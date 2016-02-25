@@ -2,7 +2,11 @@ SampleApp::Application.routes.draw do
 
   get "locations/types" => "locations#types"
 
+  get "locations/:id/sublocations" => "locations#sub_locations"
+
   get "employees/positions" => "employees#positions"
+
+  get "tasks/topics" => "tasks#topics"
 
   resources :tasks, :locations, :employees
   #resource :home, :only => :index

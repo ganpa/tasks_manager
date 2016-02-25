@@ -1,47 +1,99 @@
 <div class="container" ng-init="init()">
   <div class="row">
-    <div class="col-sm-2" style="border-right:1px;border-right-style:solid;border-right-color:#ADB1B3;">
-      <h5> Filter By <span class="glyphicon glyphicon-filter"></span></h5>
-      <hr>
-      <form>
-        <div class="form-group">
-          <label for="assigned_to"> Assigned To </label>
-          <select ng-model="employee" class="form-control">
-            <option ng-repeat="emp in employees" value="{{emp}}"> {{emp}} </option>
-          </select>
+    <div class="col-sm-2">
+      <div class="panel panel-default" >
+        <div class="panel-heading">
+          Filter By 
+          <button type="button" ng-click="filter()" class="btn btn-primary btn-xs pull-right">
+            <span class="glyphicon glyphicon-filter"></span>
+          </button>
         </div>
-        <div class="form-group">
-          <label for="status"> Status </label>
-          <select ng-model="status" class="form-control">
-            <option ng-repeat="status in statuses" value="{{status}}"> {{ status }} </option>
-          </select>
+        <div class="panel-body">
+          <form>
+            <div class="form-group">
+              <label for="status"> Status </label>
+              <select ng-model="status" class="form-control">
+                <option ng-repeat="status in statuses" value="{{status}}"> {{ status }} </option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="topic"> Topic </label>
+              <select ng-model="topic" class="form-control">
+                <option ng-repeat="topic in topics" value="{{topic}}"> {{ topic }} </option>
+              </select>
+            </div>
+            <div class="form-group" ng-show="false">
+              <label for="file_number"> File Number </label>
+              <input type="text" class="form-control" ng-model="file_number" placeholder="File Number..."> 
+            </div>
+          </form>
         </div>
-        <div class="form-group">
-          <button type="button" ng-click="filter()" class="btn btn-primary"> Filter </button>
+      <!-- </div> -->
+      <!-- <div class="panel panel-default" > -->
+        <div class="panel-heading">
+          <span style="font-weight: bold;"> 
+            Location 
+            <button type="button" ng-click="remove_location_filter()" 
+                  class="btn btn-default btn-xs pull-right">
+              <span class="glyphicon glyphicon-remove"></span>
+            </button>
+          </span>
         </div>
-      </form>
+        <div class="panel-body">
+          <form>
+            <div class="form-group">
+              <label class="control-label"> Level </label>
+              <div class="">
+                <select  ng-model="location_type" class="form-control" ng-change="select_location_type()">
+                  <option ng-repeat=" _location_type in location_types" value="{{_location_type}}"> 
+                    {{_location_type}} 
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group" ng-repeat="_location_type in location_types" 
+                  ng-show="location_type_num>=$index">
+              <label for="{{_location_type}}" class="control-label"> {{_location_type}} </label>
+              <div class="">
+                <select  ng-model="location_types_value[$index]" class="form-control" 
+                    ng-show="location_type_num>=$index" ng-change="task_location_type_value_select($index)">
+                  <option ng-repeat=" _location in locations[$index]" value="{{_location}}"> 
+                    {{_location}} 
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group col-sm-offset-3">
+              <button type="button" ng-click="filter()" class="btn btn-primary btn-sm">
+                 <span class="glyphicon glyphicon-filter"></span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
+
+
     <div class="col-sm-8">
-      <table class="table table-condensed">
+      <table class="table table-bordered table-hover">
         <tr>
-          <th> Task # </th>
-          <th> Assigned To </th>
-          <th> Topic </th>
-          <th> Due By </th>
-          <th> Status </th>
+          <th class="col-sm-1"> Task # </th>
+          <th class="col-sm-4"> Topic </th>
+          <th class="col-sm-2"> Due By </th>
+          <th class="col-sm-1"> Status </th>
         </tr>
         <div>
         <tr ng-repeat="task in tasks" id="{{task.id}}">
-          <td><a href="/tasks/{{task.id}}">  {{ task.id }} </a></td>
-          <td> {{ task.assigned_to }} </td>
+          <td><a href="/tasks/{{task.id}}">  Task-{{ task.id }} </a></td>
           <td> {{ task.topic }} </td>
           <td> {{ task.due_by }} </td>
           <td>
-            <div class="btn-group" id="completed_{{task.id}}" ng-show="task.completed">
-              <button type="button" class="btn btn-success text-center btn-xs dropdown-toggle " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" > Completed <b class="caret"></b>
+            <div class="btn-group" id="completed_{{task.id}}" ng-show="task.is_completed">
+              <button type="button" class="btn btn-success text-center btn-xs dropdown-toggle " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" > 
+                Completed
               </button>
             </div>
-            <div class="btn-group" id="open_{{task.id}}" ng-show="!task.completed">
+            <div class="btn-group" id="open_{{task.id}}" ng-show="!task.is_completed">
               <button type="button" class="btn btn-info text-center btn-xs dropdown-toggle " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Open <b class="caret"></b>
               </button>
               <ul class="dropdown-menu">

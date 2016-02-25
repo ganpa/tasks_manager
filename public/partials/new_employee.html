@@ -18,62 +18,15 @@
             </select>
           </div>
         </div>
-        <div class="form-group" ng-show="position_num>=0">
-          <label for="" class="col-sm-2 control-label"> District </label>
+        <div class="form-group" ng-repeat="_location_type in location_types" 
+            ng-show="location_type_num>=$index">
+          <label for="{{_location_type}}" class="col-sm-2 control-label"> {{_location_type}} </label>
           <div class="col-sm-4">
-            <select  ng-model="district" class="form-control" ng-show="true">
-              <option ng-repeat=" _district in districts" value="{{_district}}"> 
-                {{_district}} 
-              </option>
-            </select>
-          </div>
-        </div>
-        <div class="form-group" ng-show="position_num>=1">
-          <label for="" class="col-sm-2 control-label"> Division </label>
-          <div class="col-sm-4">
-            <select  ng-model="division" class="form-control" ng-show="true">
-              <option ng-repeat=" _division in divisions" value="{{_division}}"> 
-                {{_division}} 
-              </option>
-            </select>
-          </div>
-        </div>
-        <div class="form-group" ng-show="position_num>=2">
-          <label for="" class="col-sm-2 control-label"> Taluk </label>
-          <div class="col-sm-4">
-            <select  ng-model="taluk" class="form-control" ng-show="true">
-              <option ng-repeat=" _taluk in taluks" value="{{_taluk}}"> 
-                {{_taluk}} 
-              </option>
-            </select>
-          </div>
-        </div>
-        <div class="form-group" ng-show="position_num>=3">
-          <label for="" class="col-sm-2 control-label"> Zone </label>
-          <div class="col-sm-4">
-            <select  ng-model="zone" class="form-control" ng-show="true">
-              <option ng-repeat=" _zone in zones" value="{{_zone}}"> 
-                {{_zone}} 
-              </option>
-            </select>
-          </div>
-        </div>
-        <div class="form-group" ng-show="position_num>=4">
-          <label for="" class="col-sm-2 control-label"> Firqha </label>
-          <div class="col-sm-4">
-            <select  ng-model="firqha" class="form-control" ng-show="true">
-              <option ng-repeat=" _firqha in firqhas" value="{{_firqha}}"> 
-                {{_firqha}} 
-              </option>
-            </select>
-          </div>
-        </div>
-        <div class="form-group" ng-show="position_num==5">
-          <label for="" class="col-sm-2 control-label"> Village </label>
-          <div class="col-sm-4">
-            <select  ng-model="village" class="form-control" ng-show="true">
-              <option ng-repeat=" _village in villages" value="{{_village}}"> 
-                {{_village}} 
+            <!-- <input type="text" ng-model="location_types_value[$index]" ng-show="location_type_num==$index && !input_bulk" name="" class="form-control" id="" placeholder=""> -->
+            <select  ng-model="location_types_value[$index]" class="form-control" 
+                      ng-show="location_type_num>=$index" ng-change="location_type_value_select($index)">
+              <option ng-repeat=" _location in locations[$index]" value="{{_location}}"> 
+                {{_location}} 
               </option>
             </select>
           </div>

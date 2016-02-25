@@ -11,6 +11,12 @@ app.factory('LocationService', ['$http', function($http){
     });
   };
 
+  location_service.get_sublocations = function(location_id, call_back){
+    $http.get("/locations/" + location_id + "/sublocations").then(function(response){
+      call_back(response);
+    });
+  };
+
   location_service.get_location_by_type = function(location_type, call_back){
     queryParams = {
       "location_type" : location_type
@@ -19,14 +25,14 @@ app.factory('LocationService', ['$http', function($http){
     $http.get("/locations", {params : queryParams}).then(function(response){
       location_type_objects = response.data[location_type];
       for(i=0; i < location_type_objects.length; i++){
-        result[i] = location_type_objects[i]["name"];
+        result[i] = location_type_objects[i];
       }
       console.log("result", result);
       call_back(result);
     });
   };
 
-  location_service.get_location_by_type_and_parent = 
+  var get_location_by_type_and_parent = 
   function(parent_type_num, parent_type, parent_value, location_type, call_back){
     queryParams = {
       "location_type" : location_type,
@@ -37,7 +43,7 @@ app.factory('LocationService', ['$http', function($http){
     $http.get("/locations", {params : queryParams}).then(function(response){
       location_type_objects = response.data[location_type];
       for(i=0; i < location_type_objects.length; i++){
-        result[i] = location_type_objects[i]["name"];
+        result[i] = location_type_objects[i];
       }
       call_back(result);
     });

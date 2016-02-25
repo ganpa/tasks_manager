@@ -4,6 +4,8 @@ class LocationsController < ApplicationController
   
   
   def index
+
+    puts "request.host : #{request.host}"
     
     location_type = params[:location_type] if params.has_key?(:location_type)
     if request.query_parameters.has_key?("parent_type") && request.query_parameters.has_key?("parent_value")
@@ -18,12 +20,30 @@ class LocationsController < ApplicationController
     render :json => { location_type => locations }
   end
 
+  def show
+    render :json => Location.find(params[:id])
+  end
+
+  def sub_locations
+    location_id = params[:id]
+    location = Location.find(location_id)
+    sub_locations = location.sub_locations
+    if sub_locations.empty?
+      render :json => {}
+    else
+      sub_location_type = sub_locations.first.location_type
+      render :json => { sub_location_type => sub_locations }
+    end
+  end
+
 
   def filter_by_parent
     parent_name = request.query_parameters["parent_value"]
     parent_type = request.query_parameters["parent_type"]
     location = Location.where("name=? AND location_type=?", parent_name, parent_type)
+    puts "location : #{location.to_json}"
     Location.where(parent_id: location)
+    #location.sub_locations
   end
 
   def filter_by_location_type

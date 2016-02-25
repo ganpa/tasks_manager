@@ -12,5 +12,10 @@ module EmployeesHelper
     end
     positions
   end
+
+  def EmployeesHelper.get_position_by_location_type(location_type)
+    position_map = LocationsHelper::POSITION_MAPPER
+    position_map.key(location_type)
+  end
   
 end

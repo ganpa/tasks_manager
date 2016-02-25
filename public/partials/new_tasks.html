@@ -1,5 +1,5 @@
 <style>
-  .line {
+  .line1 {
   border:0px;
   border-style:solid;
   border-color:#ADB1B3;
@@ -8,8 +8,8 @@
 <div class="container-fluid line">
   <div class="row">
   <div class="col-sm-offset-3">
-   <form class="form-horizontal" ng-submit="send()">
-    <div class="form-group line">
+   <form class="form-horizontal" ng-init="init()">
+    <div class="form-group line" required>
       <label class="col-sm-2 control-label">Staff</label>
       <div class="col-sm-2">
         <select  ng-model="task.staff" class="form-control">
@@ -64,42 +64,49 @@
         <input type="date" ng-model="task.due_by" name="due_by" class="form-control" id="" placeholder="">
       </div>
     </div>
-
-    <div class="form-group line" ng-show="!add_user">
-      <label for="assigned_to" class="col-sm-2 control-label">Assigned To</label>
-      <div class="col-sm-4">
-        <div class="input-group">
-          <input id="the-basics" type="text" ng-model="employee.name" name="assigned_to" placeholder="Search..." class="form-control typeahead">
-          <!-- <div ng-show="!add_user" class="input-group-btn"> -->
-          <span class="input-group-btn">
-            <button type="button" class="btn btn-default" ng-click="add_user=true">
-              <span class="glyphicon glyphicon-plus"></span>
-            </button>
-          </span>
-          <!-- </div> -->
-          <div ng-show="false" class="input-group-btn">
-          <!-- <span class="input-group-btn"> -->
-            <button type="button" class="btn btn-default" ng-click="add_user=false">
-              <span class="glyphicon glyphicon-minus"></span>
-            </button>
-          <!-- </span> -->
-          </div>
-        </div>
-      </div>
-    </div>
+    <br>
     <div class="row form-group">
     <div class="col-sm-6 col-sm-offset-1 line">
-    <div name="employee_form" class="panel panel-default" ng-show="add_user">
+    <div name="employee_form" class="panel panel-default" ng-show="true">
       <div class="panel-heading">
-        Assigned To
-        <button type="button" class="btn btn-default btn-sm pull-right" ng-click="remove_employee()">
-          <span class="glyphicon glyphicon-remove"></span>
+        Office
+        <button type="button" class="btn btn-default btn-sm pull-right" ng-click="goto_create_location()">
+          <span class="glyphicon glyphicon-plus"></span>
         </button>
       </div>
       <div class="row">
-      <div class="panel-body col-sm-offset-0 line" >
-        <form class="form-horizontal" ng-submit="send()">
-        <div class="form-group line">
+      <div class="panel-body col-sm-offset-1 line" >
+        <!-- <form class="form-horizontal" ng-submit="send()"> -->
+        <div class="form-group">
+          <label class="col-sm-3 control-label"> Level </label>
+          <div class="col-sm-6">
+            <select  ng-model="location_type" class="form-control" ng-change="select_level()">
+              <option ng-repeat=" _location_type in location_types" value="{{_location_type}}"> 
+                {{_location_type}} 
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group" ng-repeat="_location_type in location_types" 
+            ng-show="location_type_num>=$index">
+          <label for="{{_location_type}}" class="col-sm-3 control-label"> {{_location_type}} </label>
+          <div class="col-sm-6">
+            <select  ng-model="location_types_value[$index]" class="form-control" 
+                      ng-show="location_type_num>=$index" ng-change="task_location_type_value_select($index)">
+              <option ng-repeat=" _location in locations[$index]" value="{{_location}}"> 
+                {{_location}} 
+              </option>
+            </select>
+          </div>
+        </div>
+        
+      <!-- <div class="form-group line" >
+        <label for="position" class="col-sm-3 control-label line"> Location </label>
+        <div class="col-sm-6 line">
+          <input type="text" ng-model="task.employee.location" class="form-control">
+        </div>
+      </div>
+      <div class="form-group line">
         <label for="name" class="col-sm-3 control-label line"> Name </label>
         <div class="col-sm-6 line">
           <input type="text" ng-model="task.employee.name" class="form-control">
@@ -110,19 +117,45 @@
         <div class="col-sm-6 line">
           <input type="text" ng-model="task.employee.position" class="form-control">
         </div>
+      </div> -->
+      <!-- </form> -->
       </div>
-      <div class="form-group line" >
-        <label for="position" class="col-sm-3 control-label line"> Location </label>
+      </div> <!-- panel body row-->
+    </div> <!-- panel -->
+    </div>
+    </div>  <!-- panel row -->
+
+    <br>
+    <div class="row form-group">
+    <div class="col-sm-6 col-sm-offset-1 line">
+    <div name="employee_form" class="panel panel-default" ng-show="true">
+      <div class="panel-heading">
+        Person Incharge
+        <!-- <button type="button" class="btn btn-default btn-sm pull-right" ng-click="remove_employee()">
+          <span class="glyphicon glyphicon-remove"></span>
+        </button> -->
+      </div>
+      <div class="row">
+      <div class="panel-body col-sm-offset-1 line" >
+        <!-- <form class="form-horizontal" ng-submit="send()"> -->
+      <div class="form-group line">
+        <label for="task.employee.name" class="col-sm-3 control-label line"> Name </label>
         <div class="col-sm-6 line">
-          <input type="text" ng-model="task.employee.location" class="form-control">
+          <input type="text" ng-model="task.employee.name" class="form-control" placeholder="Enter Name ...">
+        </div>
+        </div>
+      <div class="form-group line" >
+        <label for="position" class="col-sm-3 control-label line"> Position </label>
+        <div class="col-sm-6 line">
+          <input type="text" ng-model="task.employee.position" class="form-control" readonly>
         </div>
       </div>
-      </form>
+      <!-- </form> -->
       </div>
-      </div> <!-- row-->
+      </div> <!-- panel body row-->
+    </div> <!-- panel -->
     </div>
-    </div>
-    </div>
+    </div>  <!-- panel row -->
     <div class="form-group">
       <div class="col-sm-4 col-sm-offset-3">
         <button type="button" ng-click="create(task)" class="btn btn-primary"> Create </button>

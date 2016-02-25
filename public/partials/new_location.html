@@ -36,93 +36,14 @@
             <input type="file" ng-model="location_types_file[$index]" ngf-select 
                   ng-show="location_type_num==$index && input_bulk" name="" class="form-control" id="">
             <input type="text" ng-model="location_types_value[$index]" ng-show="location_type_num==$index && !input_bulk" name="" class="form-control" id="" placeholder="">
-            <select  ng-model="location_types_value[$index]" class="form-control" ng-change="" 
-                      ng-show="location_type_num>$index">
+            <select  ng-model="location_types_value[$index]" class="form-control" 
+                      ng-show="location_type_num>$index" ng-change="location_type_value_select($index)">
               <option ng-repeat=" _location in locations[$index]" value="{{_location}}"> 
                 {{_location}} 
               </option>
             </select>
           </div>
         </div>
-        <!-- <div class="form-group" ng-show="location_type_num>=2">
-          <label for="" class="col-sm-2 control-label"> Division </label>
-          <div class="col-sm-4">
-            <input type="file" ng-model="division_file" ngf-select 
-                  ng-show="location_type_num==2 && input_bulk" name="" class="form-control" id="">
-            <input type="text" ng-model="division" ng-show="location_type_num==2 && !input_bulk" name="" class="form-control" id="" placeholder="">
-            <select  ng-model="division" class="form-control" ng-change="" 
-                      ng-show="location_type_num>2">
-              <option ng-repeat=" _division in divisions" value="{{_division}}"> 
-                {{_division}} 
-              </option>
-            </select>
-          </div>
-        </div>
-        <div class="form-group" ng-show="location_type_num>=3">
-          <label for="" class="col-sm-2 control-label"> Taluk </label>
-          <div class="col-sm-4">
-            <input type="file" ng-model="taluk_file" ngf-select 
-                  ng-show="location_type_num==3 && input_bulk" name="" class="form-control" id="">
-            <input type="text" ng-model="taluk" ng-show="location_type_num==3 && !input_bulk" name="" class="form-control" id="" placeholder="">
-            <select  ng-model="taluk" class="form-control" ng-change="" 
-                      ng-show="location_type_num>3">
-              <option ng-repeat=" _taluk in taluks" value="{{_taluk}}"> 
-                {{_taluk}} 
-              </option>
-            </select>
-          </div>
-        </div> -->
-        <!-- <div class="form-group" ng-show="location_type_num>=2">
-          <label for="" class="col-sm-2 control-label"> Division </label>
-          <div class="col-sm-4">
-            <input type="text" ng-model="division" name="" class="form-control" id="" placeholder="">
-            <select  ng-model="" class="form-control" ng-change="()">
-              <option ng-repeat=" in " value="{{}}"> 
-                {{}} 
-              </option>
-            </select>
-          </div>
-        </div>
-        <div class="form-group" ng-show="location_type_num>=3">
-          <label for="" class="col-sm-2 control-label">Taluk</label>
-          <div class="col-sm-4">
-            <input type="text" ng-model="taluk" name="" class="form-control" id="" placeholder="">
-            <select  ng-model="" class="form-control" ng-change="()">
-              <option ng-repeat=" in " value="{{}}"> 
-                {{}} 
-              </option>
-            </select>
-          </div>
-        </div>
-        <div class="form-group" ng-show="location_type_num>=4">
-          <label for="" class="col-sm-2 control-label">Zone</label>
-          <div class="col-sm-4">
-            <input type="text" ng-model="zone" name="" class="form-control" id="" placeholder="">
-            <select  ng-model="" class="form-control" ng-change="()">
-              <option ng-repeat=" in " value="{{}}"> 
-                {{}} 
-              </option>
-            </select>
-          </div>
-        </div>
-        <div class="form-group" ng-show="location_type_num>=5">
-          <label for="" class="col-sm-2 control-label">Firqha</label>
-          <div class="col-sm-4">
-            <input type="text" ng-model="firqha" name="" class="form-control" id="" placeholder="">
-          </div>
-        </div>
-        <div class="form-group" ng-show="location_type_num>=6">
-          <label for="" class="col-sm-2 control-label">Village</label>
-          <div class="col-sm-4">
-            <input type="text" ng-model="village" name="" class="form-control" id="" placeholder="">
-          </div>
-        </div> -->
-        <!-- <div class="form-group" ng-show="location_type_num==7">
-          <label for="" class="col-sm-2 control-label"></label>
-          <div class="col-sm-4">
-            <input type="text" ng-model="" name="" class="form-control" id="" placeholder="">
-          </div>
-        </div> -->
         <div class="form-group">
           <div class="col-sm-4 col-sm-offset-3">
             <button type="button" ng-click="create()" class="btn btn-primary"> Create </button>

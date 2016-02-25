@@ -3,6 +3,10 @@ var app = angular.module("app", ['ngRoute', 'ngFileUpload']);
 
 app.config(['$routeProvider', function($routeProvider){
   $routeProvider
+    .when('/config', {
+      templateUrl: 'partials/config.html',
+      controller: 'ConfigController'
+    })
     .when('/tasks/new', {
       templateUrl: 'partials/new_tasks.html',
       controller: 'NewTaskController'

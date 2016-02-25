@@ -1,6 +1,6 @@
 module ApplicationHelper
 
-  @app_context = "State"
+  @app_context = "Division"
 
   def ApplicationHelper.set_app_context(app_context)
     @app_context = app_context
