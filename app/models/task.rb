@@ -1,5 +1,24 @@
+# == Schema Information
+#
+# Table name: tasks
+#
+#  id           :integer          not null, primary key
+#  staff        :string(255)
+#  topic        :string(255)
+#  due_by       :date
+#  completed_on :date
+#  is_completed :boolean
+#  employee_id  :integer
+#  location_id  :integer
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
+#
+
 class Task < ActiveRecord::Base
-  attr_accessible :is_completed, :completed_on, :due_by, :staff, :topic, :employee_id, :location_id, :number
+  attr_accessible :is_completed, :completed_on, :due_by, :staff, :topic, :employee_id, :location_id, :number,
+                  :file_nums
+
+  serialize :file_nums, Array
 
   alias_attribute :number, :id
 

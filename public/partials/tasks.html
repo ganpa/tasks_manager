@@ -33,7 +33,7 @@
         <div class="panel-heading">
           <span style="font-weight: bold;"> 
             Location 
-            <button type="button" ng-click="remove_location_filter()" 
+            <button type="button" ng-show="location_type_num>-1" ng-click="remove_location_filter()" 
                   class="btn btn-default btn-xs pull-right">
               <span class="glyphicon glyphicon-remove"></span>
             </button>
@@ -78,16 +78,22 @@
       <table class="table table-bordered table-hover">
         <tr>
           <th class="col-sm-1"> Task # </th>
-          <th class="col-sm-4"> Topic </th>
+          <th class="col-sm-3"> Topic </th>
+          <th class="col-sm-2"> Location  </th>
+          <th class="col-sm-3"> File Numbers </th>
           <th class="col-sm-2"> Due By </th>
           <th class="col-sm-1"> Status </th>
         </tr>
         <div>
         <tr ng-repeat="task in tasks" id="{{task.id}}">
-          <td><a href="/tasks/{{task.id}}">  Task-{{ task.id }} </a></td>
-          <td> {{ task.topic }} </td>
+          <td><a href="#/tasks/{{task.id}}">  Task-{{ task.id }} </a></td>
+          <td>{{ task.topic }} </td>
+          <td> {{ task.location.name }} </td>
+          <td> 
+            <p ng-repeat="file_num in task.file_nums"> #{{file_num}}&nbsp; </p>
+          </td>
           <td> {{ task.due_by }} </td>
-          <td>
+          <td class="col-sm-1">
             <div class="btn-group" id="completed_{{task.id}}" ng-show="task.is_completed">
               <button type="button" class="btn btn-success text-center btn-xs dropdown-toggle " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" > 
                 Completed
@@ -97,12 +103,19 @@
               <button type="button" class="btn btn-info text-center btn-xs dropdown-toggle " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Open <b class="caret"></b>
               </button>
               <ul class="dropdown-menu">
-                  <li> 
+              <!-- <div class="row"> -->
+
+                  <li >
+                <!-- <div class="col-sm-12"> -->
                     <label> Completion Date </label>
-                    <input type="date"> 
+                     <!-- </div> -->
+
+                    <!-- <div class="col-sm-1 col-sm-offset-1"> -->
+                    <input type="date" > <!--</div><div class="col-sm-1"></div>-->
                     <button ng-click="setCompleted(task)" name="completed" class="btn btn-link btn-xs btn-block" type="submit">  Completed</button>
                   </li>
                 </ul>
+              <!-- </div>  row-->
             </div>
           </td>
         </tr>

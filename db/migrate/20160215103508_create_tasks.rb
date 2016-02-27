@@ -3,6 +3,7 @@ class CreateTasks < ActiveRecord::Migration
     create_table :tasks do |t|
       t.string :staff
       t.string :topic
+      t.text :file_nums
       t.date :due_by
       t.date :completed_on
       t.boolean :is_completed

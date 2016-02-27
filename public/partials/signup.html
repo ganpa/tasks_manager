@@ -1,0 +1,49 @@
+<div class="row">
+  <div class="col-sm-3">
+  </div>
+  <div class="col-sm-6">
+<div class="panel panel-default">
+  <div class="panel-heading"> 
+    SignUp
+    
+   </div>
+   
+  <div class="panel-body">
+    <br>
+<div class="container-fluid center">
+  <div class="row">
+  <!-- <div class="col-sm-4 col-sm-offset-3"> -->
+   <form class="form-horizontal col-sm-offset-0">
+    <div class="form-group">
+      <label for="name" class="col-sm-4 control-label">Username </label>
+      <div class="col-sm-6">
+        <input type="text" class="form-control" ng-model="name" placeholder="Username">
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="password" class="col-sm-4 control-label">Password</label>
+      <div class="col-sm-6">
+        <input type="password" class="form-control"  ng-model="password" placeholder="Password">
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="password_confirmation" class="col-sm-4 control-label">Confirm Password </label>
+      <div class="col-sm-6">
+        <input type="password" class="form-control"  ng-model="password_confirmation" placeholder="Confirm Password">
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-offset-5 col-sm-4">
+        <button type="submit" class="btn btn-default" ng-click="signup()">Signup</button>
+      </div>
+    </div>
+  </form>
+  <!-- </div> -->
+</div>
+</div>
+</div> <!-- panel body -->
+<div class="panel-footer">
+    <center><a ui-sref="signin"> Signin </a><center>
+</div>
+</div>
+</div> <!-- panel -->

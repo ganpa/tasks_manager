@@ -1,7 +1,7 @@
 <div class="container-fluid">
   <div class="row">
     <div class="col-sm-offset-3">
-      <form class="form-horizontal" ng-submit="send()"ng-init="init()" >
+      <form class="form-horizontal" ng-submit="send()" ng-init="init()" >
         <div class="form-group">
           <label class="col-sm-2 control-label">Input Type </label>
           <div class="col-sm-4">
@@ -34,7 +34,7 @@
           <label for="{{_location_type}}" class="col-sm-2 control-label"> {{_location_type}} </label>
           <div class="col-sm-4">
             <input type="file" ng-model="location_types_file[$index]" ngf-select 
-                  ng-show="location_type_num==$index && input_bulk" name="" class="form-control" id="">
+                  ng-show="location_type_num==$index && input_bulk" name="file" class="form-control" id="file">
             <input type="text" ng-model="location_types_value[$index]" ng-show="location_type_num==$index && !input_bulk" name="" class="form-control" id="" placeholder="">
             <select  ng-model="location_types_value[$index]" class="form-control" 
                       ng-show="location_type_num>$index" ng-change="location_type_value_select($index)">

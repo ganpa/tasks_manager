@@ -8,7 +8,15 @@ SampleApp::Application.routes.draw do
 
   get "tasks/topics" => "tasks#topics"
 
+  post "/signup" => "users#create"
+
+  post "/signin" => "sessions#create"
+
+  get "/signout" => "sessions#destroy"
+
   resources :tasks, :locations, :employees
+  resources :sessions, only: [:new, :create, :destroy]
+  resources :users, only: [:create, :index]
   #resource :home, :only => :index
   root :to => 'home#index'
 

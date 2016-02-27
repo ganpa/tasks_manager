@@ -3,6 +3,9 @@ require 'json'
 class TasksController < ApplicationController
   
   def index
+    cookies[:test] = {value: "ganapathy's_browser", expires: 1.day.from_now.utc}
+    #puts "\n\ncookies: #{cookies.to_json}"
+
     query_params = request.query_parameters
     if !query_params.empty?
       query = query_params
@@ -15,7 +18,14 @@ class TasksController < ApplicationController
     else
       tasks = Task.all
     end
-    render :json => {"tasks" => tasks}
+    data = []
+    tasks.each do |task|
+      location = task.location
+      data_entry = task
+      data_entry[:location] = location
+      data.push(data_entry)
+    end
+    render :json => {"tasks" => data}
   end
 
   def topics
@@ -26,7 +36,8 @@ class TasksController < ApplicationController
   def show
     task = Task.find(params[:id])
     location = task.location
-    data = {"task" => task, "location" => location}
+    data = task
+    data[:location] = location
     render :json => data
   end
 
@@ -37,6 +48,7 @@ class TasksController < ApplicationController
     task = Task.new do |t|
       t.staff = params[:staff]
       t.topic = params[:topic]
+      t.file_nums = params[:file_nums]
       t.due_by = params[:due_by]
       location_id = params[:location][:id]
       t.location_id = location_id
@@ -59,7 +71,7 @@ class TasksController < ApplicationController
     # puts (task.due_by - Date.current).to_i
     # puts "\n\n\ntask: #{task.to_json}, valid: #{task.valid?}"
     task.save
-    render :json => {success: true}
+    render :json => { "id" => task.id}
   end
 
   def update

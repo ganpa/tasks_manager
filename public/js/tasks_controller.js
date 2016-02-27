@@ -1,4 +1,5 @@
-app.controller('TasksController', ['$scope', '$http', '$controller', function($scope, $http, $controller){
+app.controller('TasksController', ['$rootScope', '$scope', '$http', '$controller', 
+  function($rootScope, $scope, $http, $controller){
   const ANY = "Any";
 
   $scope.init = function(){
@@ -9,9 +10,13 @@ app.controller('TasksController', ['$scope', '$http', '$controller', function($s
     // $scope.status = 'Any';
     $scope.statuses = [ANY, 'Open', 'Closed'];
     // $scope.tasks = [];
+    console.log("alert_message", $rootScope.alert_message);
+
+    //$rootScope.alert_message = null;
 
     $http.get("/tasks").then(function(response){
       $scope.tasks = response.data["tasks"];
+      // console.log("response", response);
       console.log("tasks", $scope.tasks);
     });
 

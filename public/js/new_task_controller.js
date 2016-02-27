@@ -1,8 +1,9 @@
-app.controller('NewTaskController', ['$scope', '$http', '$controller', '$location', 'EmployeeService',
-  function($scope, $http, $controller, $location, EmployeeService){
+app.controller('NewTaskController', ['$rootScope', '$scope', '$http', '$controller', '$location', 'EmployeeService',
+  function($rootScope, $scope, $http, $controller, $location, EmployeeService){
   
   $scope.init = function(){
     console.log("init");
+    $rootScope.alert_message = null;
     $controller('LocationSelectController', {$scope: $scope});
     $scope.init_location_select();
     $scope.staff = 'A1';
@@ -40,7 +41,6 @@ app.controller('NewTaskController', ['$scope', '$http', '$controller', '$locatio
             $scope.task.employee.name = response.data["employee"].name;
           }
         });
-
       }
     });
   };
@@ -52,6 +52,8 @@ app.controller('NewTaskController', ['$scope', '$http', '$controller', '$locatio
     console.log(task);
     $http.post("/tasks", task).then(function(response){
       console.log("task post done");
+      $rootScope.alert_message = "Successfully created task with id #" + response.data["id"];
+      $location.path("/tasks");
     });
   }
 

@@ -13,6 +13,7 @@ function($scope, $controller, $location, Upload, LocationService){
   };
 
   $scope.input_type_select = function(input_type){
+    $scope.input_type = input_type;
     if(input_type != "Default"){
       $scope.input_bulk = true;
     }
@@ -21,11 +22,11 @@ function($scope, $controller, $location, Upload, LocationService){
     }
   };
 
-  $scope.upload = function (file) {
+  $scope.upload = function (data) {
     Upload.upload({
       url: '/locations/',
       method: 'POST',
-      data: {file: file}
+      data: data
     }).then(function (resp) {
         console.log('Success ' + resp.config.data.file.name + 'uploaded. Response: ' + resp.data);
     }, function (resp) {
@@ -37,26 +38,30 @@ function($scope, $controller, $location, Upload, LocationService){
   };
 
   $scope.create = function(){
-    //console.log($scope.district);
-    if($scope.input_bulk == true)
-      $scope.upload($scope.file);
+    data = {};
+    data["location_type"] = $scope.location_type;
+
+    console.log("location_type_num", $scope.location_type_num);
+
+    if($scope.location_type_num > 0)
+      data["parent_id"] = $scope.get_location_id($scope.location_type_num-1);
+    else
+      data["parent_id"] = -1;
+
+    if(!($scope.input_type == "Default")){
+      data["input_type"] = "file";
+      data["file"] = $scope.location_types_file[$scope.location_type_num];
+      $scope.upload(data);
+    }
     else{
-      // console.log($scope.locations);
-      console.log("location_types_value");
-      console.log($scope.location_types_value);
-      data = {};
-      for(i=0; i<$scope.location_types_value.length; i++){
-        data[$scope.location_types[i]] = $scope.location_types_value[i];
-      }
-      data["location_type"] = $scope.location_type;
-      data["input_type"] = $scope.input_type;
-      console.log(data);
+      data["input_type"] = "simple";
+      data["location_name"] = $scope.location_types_value[$scope.location_type_num];
       LocationService.create_location(data, function(){
         console.log("create success");
       });
-      
-
     }
+    console.log("data", data);
+
   };
   
 }]);

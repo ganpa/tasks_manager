@@ -1,91 +1,51 @@
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" >
 <head>
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.29/angular.min.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.29/angular-route.min.js"></script>
+  <title>Task Manager</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 
-  
-  <title>Task Manager</title>
-  
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular-route.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular-cookies.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.18/angular-ui-router.min.js">
+  </script>
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+  <!-- <link rel="stylesheet" href="css/bootstrap.min.css"> -->
 </head>
-<body ng-app="app">
+<body ng-app="app" ng-controller="HomeController" ng-init="init()">
 <style type="text/css">
     body { padding-top: 80px; }
     .menu-bar  {
       background-color: #337ab7;
+      border-color: #337ab7;
       color: #fff;
     }
 </style>
 
 <div class="navbar navbar-default navbar-fixed-top " role="navigation">
   <div class="container">
-    <div class="navbar-header">
-      <a class="navbar-brand" href="http://tn.gov.in">
-        <!--<img class="img-responsive" src="/assets/tn_govt_logo.png">-->
-      </a>
-    </div>
-    <ul class="nav navbar-nav">
-      <li role="presentation" class="active"> <a href="#/"> Home </a></li>
-      <li role="presentation" class="dropdown"> 
-        <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" 
-        aria-haspopup="true"> Tasks <b class="caret"></b></a>
-        <ul class="dropdown-menu">
-          <li>
-              <a href="#/tasks/new"> 
-                <span class="glyphicon glyphicon-plus"></span> &nbsp;
-                Create 
-              </a>
-          </li>
-          <li>
-            <a href="#/tasks"> 
-              <span class="glyphicon glyphicon-search"></span> &nbsp;
-              Show 
-            </a>
-          </li>
-        </ul>
-      </li>
-    </ul>
-
-    <ul class="nav navbar-nav navbar-right">
-      <li role="presentation" class="dropdown"> 
-        <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" 
-        aria-haspopup="true"> Admin <b class="caret"></b></a>
-        <ul class="dropdown-menu">
-          <li>
-              <a href="#/locations/new"> 
-                <span class="glyphicon glyphicon-plus"></span> &nbsp;
-                Location 
-              </a>
-          </li>
-          <li>
-            <a href="#/employees/new"> 
-              <span class="glyphicon glyphicon-plus"></span> &nbsp;
-              Employee 
-            </a>
-          </li>
-          <!-- <li>
-              <a href="#/config"> 
-                <span class="glyphicon glyphicon-cog"></span> &nbsp;
-                Configure 
-              </a>
-          </li> -->
-        </ul>
-      </li>
-      <li role="presentation" class=""> <a href="/"> User name </a></li>
-      <li role="presentation" class=""> <a href="/"> logout </a></li>
-    </ul>
+    <div ui-view="navbar"></div>
   </div>
 </div>
 
-<div ng-view></div>
+<div ui-view="alert_message"></div>
+
+<div ui-view="main"></div>
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<!-- <script src="js/jquery/jquery.min.js"></script> -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+<!-- <script src="js/bootstrap/bootstrap.min.js"></script> -->
+<!-- <script src="js/angular/angular.min.js"></script> -->
+<!-- <script src="js/angular/angular-route.min.js"></script> -->
 <script src="js/ng-file-upload.min.js"></script>
 <script src="js/app.js"></script>
+<script src="js/signup_controller.js"></script>
+<script src="js/signin_controller.js"></script>
+<script src="js/signin_service.js"></script>
 <script src="js/location_service.js"></script>
 <script src="js/employee_service.js"></script>
 <script src="js/locations_controller.js"></script>

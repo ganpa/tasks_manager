@@ -1,0 +1,44 @@
+<ul class="nav navbar-nav">
+  <!-- <li role="presentation" class="active"> <a href="#/"> Home </a></li> -->
+  <li role="presentation" class="dropdown"> 
+    <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" 
+    aria-haspopup="true"> Tasks <b class="caret"></b></a>
+    <ul class="dropdown-menu">
+      <li>
+          <a ui-sref="new_task"> 
+            <span class="glyphicon glyphicon-plus"></span> &nbsp;
+            Create 
+          </a>
+      </li>
+      <li>
+        <a ui-sref="tasks"> 
+          <span class="glyphicon glyphicon-search"></span> &nbsp;
+          Show 
+        </a>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<ul class="nav navbar-nav navbar-right">
+  <li role="presentation" class="dropdown"> 
+    <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" 
+    aria-haspopup="true"> Admin <b class="caret"></b></a>
+    <ul class="dropdown-menu">
+      <li>
+          <a href="#/locations/new"> 
+            <span class="glyphicon glyphicon-plus"></span> &nbsp;
+            Location 
+          </a>
+      </li>
+      <li>
+        <a href="#/employees/new"> 
+          <span class="glyphicon glyphicon-plus"></span> &nbsp;
+          Employee 
+        </a>
+      </li>
+      
+    </ul>
+  </li>
+  <li role="presentation" class=""> <a ui-sref="signout"> Signout </a></li>
+</ul>
