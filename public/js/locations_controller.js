@@ -1,11 +1,17 @@
-app.controller('NewLocationController', ['$scope', '$controller', '$location', 'Upload', 'LocationService', 
-function($scope, $controller, $location, Upload, LocationService){
+app.controller('NewLocationController', ['$scope', '$controller', '$location', 
+    'Upload', 'LocationService', 'SigninService',
+function($scope, $controller, $location, Upload, LocationService, SigninService){
     
   $scope.init = function(){
+    SigninService.is_signed_in();
+
     $scope.name = "location";
 
     $controller('LocationSelectController', {$scope: $scope});
     $scope.init_location_select();
+
+    $controller('AlertController', {$scope: $scope});
+    $scope.alert_init();
 
     $scope.input_type = "Default";
     $scope.input_bulk = false;
@@ -58,6 +64,10 @@ function($scope, $controller, $location, Upload, LocationService){
       data["location_name"] = $scope.location_types_value[$scope.location_type_num];
       LocationService.create_location(data, function(){
         console.log("create success");
+        $scope.alert("Successfully created location " + data["location_name"]);
+      }, function(response){
+          //console.log("failed to create location");
+          $scope.alert("Failed to create location");
       });
     }
     console.log("data", data);

@@ -1,5 +1,14 @@
 <div class="container" ng-init="init()">
   <div class="row">
+  <div class="col-sm-2">
+  </div>
+  <div class="col-sm-8"  ng-show="is_alert==true">
+    <div class="alert alert-success alert-dismissible" role="alert">
+      {{ alert_message }}
+    </div>
+  </div>
+</div>
+  <div class="row">
     <div class="col-sm-2">
       <div class="panel panel-default" >
         <div class="panel-heading">

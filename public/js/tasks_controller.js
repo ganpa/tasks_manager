@@ -1,23 +1,44 @@
-app.controller('TasksController', ['$rootScope', '$scope', '$http', '$controller', 
-  function($rootScope, $scope, $http, $controller){
+app.controller('TasksController', ['$rootScope', '$scope', '$state', 
+  '$http', '$controller', 'AlertService', 'SigninService',
+  function($rootScope, $scope, $state, $http, $controller, AlertService, SigninService){
+
   const ANY = "Any";
 
   $scope.init = function(){
+
+    SigninService.is_signed_in();
+    console.log("tasksController init");
     $controller('LocationSelectController', {$scope: $scope});
     $scope.init_location_select();
+
+    $controller('AlertController', {$scope: $scope});
+    $scope.alert_init();
+    // $scope.is_alert = false;
+    console.log("is_alert", $scope.is_alert);
 
     $scope.employee = 'All';
     // $scope.status = 'Any';
     $scope.statuses = [ANY, 'Open', 'Closed'];
     // $scope.tasks = [];
-    console.log("alert_message", $rootScope.alert_message);
+    //console.log("alert_message", $rootScope.alert_message);
 
     //$rootScope.alert_message = null;
+
+    // if (AlertService.hasMessage()){
+    //   $scope.alert(AlertService.getMessage());
+    //   AlertService.clearMessage();
+    // }
 
     $http.get("/tasks").then(function(response){
       $scope.tasks = response.data["tasks"];
       // console.log("response", response);
       console.log("tasks", $scope.tasks);
+    }, function(response){
+         console.log("tasks response", response);
+        // if(response.status == 307){
+        //   AlertService.setMessage(response.data.message);
+        //   $state.transitionTo("signin")
+        // }
     });
 
     $http.get("tasks/topics").then(function(response){

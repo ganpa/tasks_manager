@@ -14,8 +14,11 @@ app.controller('LocationSelectController', ['$scope', 'LocationService', functio
   };
 
   $scope.get_location_id = function(index){
-    location_id = $scope.location_maps[index][$scope.location_types_value[index]];
-    return location_id;
+    if(index >= 0){
+      location_id = $scope.location_maps[index][$scope.location_types_value[index]];
+      return location_id;
+    }
+    return -1;
   };
 
   $scope.location_type_value_select = function(index, call_back){

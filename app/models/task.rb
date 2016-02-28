@@ -25,7 +25,7 @@ class Task < ActiveRecord::Base
   belongs_to :employee
   belongs_to :location
 
-  validates :staff, :topic, :employee_id, :location_id, :due_by, :completed, :presence => true, :on => :save
+  validates :staff, :topic, :employee_id, :location_id, :due_by, :presence => true
   validates_associated :employee
 
 end

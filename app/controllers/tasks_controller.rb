@@ -1,9 +1,11 @@
 require 'json'
 
 class TasksController < ApplicationController
+
+  before_filter :require_login
   
   def index
-    cookies[:test] = {value: "ganapathy's_browser", expires: 1.day.from_now.utc}
+    #cookies[:test] = {value: "ganapathy's_browser", expires: 1.day.from_now.utc}
     #puts "\n\ncookies: #{cookies.to_json}"
 
     query_params = request.query_parameters
@@ -35,10 +37,12 @@ class TasksController < ApplicationController
 
   def show
     task = Task.find(params[:id])
+  rescue ActiveRecord::RecordNotFound
+    return render :json => {"message" => "Task with id: #{params[:id]} not found"}, status: :not_found
     location = task.location
     data = task
     data[:location] = location
-    render :json => data
+    render :json => data, status: :ok
   end
 
   def create
@@ -50,6 +54,7 @@ class TasksController < ApplicationController
       t.topic = params[:topic]
       t.file_nums = params[:file_nums]
       t.due_by = params[:due_by]
+      t.is_completed = 0
       location_id = params[:location][:id]
       t.location_id = location_id
       emp_value = Employee.find_by_location_id(params[:location][:id])
@@ -63,15 +68,20 @@ class TasksController < ApplicationController
         employee = emp_value
         employee.name = params[:employee][:name]
       end
-      employee.save
+      puts "employee: #{employee}, valid: #{employee.valid?}"
+      if !employee.save
+        return render :json => {"messages" => employee.errors.messages}, status: :bad_request
+      end
       t.employee = employee
-      t.is_completed = false
     end
     # puts "\n\n\n" 
     # puts (task.due_by - Date.current).to_i
-    # puts "\n\n\ntask: #{task.to_json}, valid: #{task.valid?}"
-    task.save
-    render :json => { "id" => task.id}
+     puts "\n\n\ntask: #{task.to_json}, valid: #{task.valid?}, error: #{task.errors.messages.to_json}"
+
+    if !task.save
+      return render :json => {"messages" => task.errors.messages}, status: :bad_request
+    end
+    render :json => { "id" => task.id}, status: :ok
   end
 
   def update
@@ -80,6 +90,7 @@ class TasksController < ApplicationController
     puts "\n\n"
     task = Task.find(params[:id])
     task.is_completed = params[:completed]
+    
     task.save
 
     #@task.update_attributes({:completed => true})

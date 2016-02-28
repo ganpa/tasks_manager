@@ -1,7 +1,13 @@
-app.controller('NewEmployeeController', ['$scope', '$http', '$controller', '$location', 'LocationService', 
-  function($scope, $http, $controller, $location, LocationService){
+app.controller('NewEmployeeController', ['$scope', '$http', '$controller', '$location', 
+  'LocationService', 'SigninService',
+  function($scope, $http, $controller, $location, LocationService, SigninService){
 
   $scope.init = function(){
+    SigninService.is_signed_in();
+
+    $controller('AlertController', {$scope: $scope});
+    $scope.alert_init();
+
     $controller('LocationSelectController', {$scope: $scope});
     $scope.init_location_select();
 
@@ -22,6 +28,10 @@ app.controller('NewEmployeeController', ['$scope', '$http', '$controller', '$loc
 
     $http.post("/employees", data).then(function(){
       console.log("post success");
+      $scope.alert("Successfully created employee " + data.name);
+    }, function(response){
+        console.log("messages", response.data.messages);
+        $scope.alert("Failed to create employee");
     });
 
   };

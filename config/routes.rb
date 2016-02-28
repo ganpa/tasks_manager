@@ -14,6 +14,8 @@ SampleApp::Application.routes.draw do
 
   get "/signout" => "sessions#destroy"
 
+  get "/is_signed_in" => "sessions#is_signed_in"
+
   resources :tasks, :locations, :employees
   resources :sessions, only: [:new, :create, :destroy]
   resources :users, only: [:create, :index]

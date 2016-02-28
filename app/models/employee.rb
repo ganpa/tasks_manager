@@ -17,5 +17,5 @@ class Employee < ActiveRecord::Base
   has_many :tasks
   belongs_to :location
 
-  validates :name, :position, :location_id, :presence => true, :on => :save
+  validates :name, :position, :location_id, :presence => true
 end

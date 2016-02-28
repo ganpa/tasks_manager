@@ -6,6 +6,7 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
     .state('signup', {
       url: '/signup',
       views : {
+        // 'alert_message' : {templateUrl : 'partials/alert.html', controller: 'SignupController'},
         'main' : {templateUrl: 'partials/signup.html', controller: 'SignupController'},
         'navbar' : {templateUrl: 'partials/home_navbar.html'}
       }
@@ -61,7 +62,7 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
     .state('tasks',{
       url: '/tasks',
       views: {
-        'alert_message' : {templateUrl : 'partials/alert.html'},
+        // 'alert_message' : {templateUrl : 'partials/alert.html'},
         'main' : { templateUrl: 'partials/tasks.html', controller: 'TasksController'},
         'navbar' : {templateUrl: 'partials/signedin_navbar.html'}
       }

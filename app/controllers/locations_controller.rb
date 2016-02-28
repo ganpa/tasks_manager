@@ -1,35 +1,46 @@
 require 'roo'
 
 class LocationsController < ApplicationController
-  
+    
+  before_filter :require_login
   
   def index
     puts "cookies: #{cookies.to_json}"
     puts "request.host : #{request.host}"
     
     location_type = params[:location_type] if params.has_key?(:location_type)
-    if request.query_parameters.has_key?("parent_type") && request.query_parameters.has_key?("parent_value")
-      locations = filter_by_parent
-    elsif params.has_key?(:location_type)
-      locations = filter_by_location_type
+    if params.has_key?(:location_type)
+      begin
+      locations = filter_by_location_type()
+      rescue ActiveRecord::RecordNotFound
+        return render :json => {"message" => "Location not found"}, status: :not_found
+      end
     else
       location_type = "locations"
       locations = Location.all
     end
-
     render :json => { location_type => locations }
   end
 
   def show
     render :json => Location.find(params[:id])
+    rescue ActiveRecord::RecordNotFound
+      return render :json => {"message" => "Locatoin with id: #{params[:id]} not found"}, status: :not_found
   end
 
   def sub_locations
     location_id = params[:id]
-    location = Location.find(location_id)
+    begin
+      location = Location.find(location_id)
+      rescue ActiveRecord::RecordNotFound
+        return render :json => {"message" => "Locatoin with id: #{params[:id]}not found"}, status: :not_found
+    end
     sub_locations = location.sub_locations
     if sub_locations.empty?
-      render :json => {}
+      location_types = LocationsHelper.get_location_types
+      index = location_types.index(location.location_type)
+      sub_location_type = location_types[index+1]
+      render :json => { sub_location_type => []}
     else
       sub_location_type = sub_locations.first.location_type
       render :json => { sub_location_type => sub_locations }
@@ -37,14 +48,14 @@ class LocationsController < ApplicationController
   end
 
 
-  def filter_by_parent
-    parent_name = request.query_parameters["parent_value"]
-    parent_type = request.query_parameters["parent_type"]
-    location = Location.where("name=? AND location_type=?", parent_name, parent_type)
-    puts "location : #{location.to_json}"
-    Location.where(parent_id: location)
-    #location.sub_locations
-  end
+  # def filter_by_parent
+  #   parent_name = request.query_parameters["parent_value"]
+  #   parent_type = request.query_parameters["parent_type"]
+  #   location = Location.where("name=? AND location_type=?", parent_name, parent_type)
+  #   puts "location : #{location.to_json}"
+  #   Location.where(parent_id: location)
+  #   #location.sub_locations
+  # end
 
   def filter_by_location_type
     location_type = params[:location_type]
@@ -96,7 +107,9 @@ class LocationsController < ApplicationController
     location = create_location(params)
     puts "location: #{location.to_json} is_valid: #{location.valid?}"
     
-    #location.save
+    if !location.save
+      return render :json => {"messages" => location.errors.messages}, status: :bad_request
+    end
 
     render :json => {}
 

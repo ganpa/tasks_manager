@@ -1,5 +1,7 @@
 class EmployeesController < ApplicationController
 
+  before_filter :require_login
+
   def index
     # if request.query_parameters.has_key?("location_name") && request.query_parameters["location_type"]
     #   key = "employee"
@@ -16,6 +18,13 @@ class EmployeesController < ApplicationController
   end
 
   def show
+    begin
+      emp = Employee.find(params[:id])
+    rescue ActiveRecord::RecordNotFound
+      return render :json => {"message" => "Employee with id #{params[:id]} not found"}, status: :not_found 
+    end
+
+    render :json => {"employee" => emp}
   end
 
   def filter_by_location_name_and_type(location_name, location_type)
@@ -43,7 +52,9 @@ class EmployeesController < ApplicationController
     end
     puts "employee #{emp.to_json}"
     puts "employee valid: #{emp.valid?}"
-    emp.save
+    if !emp.save
+      return render :json => {"messages" => emp.errors.messages}, status: :bad_request
+    end
     render :json => {}
   end
 

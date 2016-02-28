@@ -22,4 +22,13 @@ module SessionsHelper
     cookies.delete(:remember_token)
   end
 
+  def require_login
+    puts "cookies #{cookies.to_json}"
+    puts "remember_token : #{cookies[:remember_token]}"
+    if !signed_in?
+      return render :json => {"message" => "Please Login"}, status: :temporary_redirect
+    else
+    end
+  end
+
 end

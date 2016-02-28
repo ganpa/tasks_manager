@@ -1,11 +1,18 @@
-app.controller('NewTaskController', ['$rootScope', '$scope', '$http', '$controller', '$location', 'EmployeeService',
-  function($rootScope, $scope, $http, $controller, $location, EmployeeService){
+app.controller('NewTaskController', ['$rootScope', '$scope', '$http', '$controller', 
+  '$location', 'EmployeeService', 'AlertService', 'SigninService',
+  function($rootScope, $scope, $http, $controller, $location, EmployeeService, AlertService, SigninService){
   
   $scope.init = function(){
+    SigninService.is_signed_in();
+
+    $controller('AlertController', {$scope: $scope});
+    $scope.alert_init();
+
     console.log("init");
-    $rootScope.alert_message = null;
+    // $rootScope.alert_message = null;
     $controller('LocationSelectController', {$scope: $scope});
     $scope.init_location_select();
+
     $scope.staff = 'A1';
     $scope.staffs = ['A1', 'A2', 'A3', 'B1', 'B2', 'B3'];
     $scope.add_user = false;
@@ -52,8 +59,14 @@ app.controller('NewTaskController', ['$rootScope', '$scope', '$http', '$controll
     console.log(task);
     $http.post("/tasks", task).then(function(response){
       console.log("task post done");
-      $rootScope.alert_message = "Successfully created task with id #" + response.data["id"];
-      $location.path("/tasks");
+      //$rootScope.alert_message = "Successfully created task with id #" + response.data["id"];
+      console.log("task respnose", response);
+      //AlertService.clearMessage();
+      //AlertService.setMessage("Successfully created with tasks with id " + response.data.id);
+      $scope.alert("Successfully created task with id " + response.data.id);
+      //$location.path("/tasks");
+    }, function(respnose){
+        $scope.alert("Failed to create task");
     });
   }
 

@@ -49,9 +49,12 @@ app.factory('LocationService', ['$http', function($http){
     });
   };
 
-  location_service.create_location = function(data, call_back){
+  location_service.create_location = function(data, success, failure){
     $http.post("/locations", data).then(function(){
-      call_back();
+      success();
+    }, function(response){
+      console.log("erro response", response);
+      failure();
     });
   };
 
