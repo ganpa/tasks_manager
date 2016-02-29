@@ -7,17 +7,17 @@ gem 'roo', '~> 2.1.0'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
-gem 'sqlite3'
+#gem 'sqlite3'
 
-gem "mysql2", "~> 0.3.0"
 
 gem 'bcrypt-ruby', '3.0.1'
 
 group :production do
-  #gem 'pg', '0.12.2'
+  gem 'pg', '0.12.2'
 end
 
 group :development, :test do
+  gem "mysql2", "~> 0.3.0"
   gem 'rspec-rails'
   gem 'annotate', '2.5.0'
 end
