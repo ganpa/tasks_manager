@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '3.2.18'
+gem 'rails', '3.2.22'
 
 gem 'roo', '~> 2.1.0'
 
@@ -13,7 +13,7 @@ gem 'roo', '~> 2.1.0'
 gem 'bcrypt-ruby', '3.0.1'
 
 group :production do
-  gem 'pg', '0.12.2'
+  gem 'pg', '0.18.4'
 end
 
 group :development, :test do
