@@ -1,6 +1,8 @@
 class EmployeesController < ApplicationController
+  include LocationsHelper
+  include EmployeesHelper
 
-  before_filter :require_login
+  before_filter :current_account, :require_login
 
   def index
     # if request.query_parameters.has_key?("location_name") && request.query_parameters["location_type"]
@@ -35,10 +37,10 @@ class EmployeesController < ApplicationController
   def positions
     if request.query_parameters.has_key?("location_type")
       key = "position"
-      value = EmployeesHelper.get_position_by_location_type(request.query_parameters["location_type"])
+      value = get_position_by_location_type(request.query_parameters["location_type"])
     else
       key = "positions"
-      value = EmployeesHelper.get_positions
+      value = get_positions
     end
     render :json => { key => value}
   end

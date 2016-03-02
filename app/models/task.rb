@@ -16,16 +16,17 @@
 
 class Task < ActiveRecord::Base
   attr_accessible :is_completed, :completed_on, :due_by, :staff, :topic, :employee_id, :location_id, :number,
-                  :file_nums
+                  :file_nums, :account_id
 
   serialize :file_nums, Array
 
   alias_attribute :number, :id
 
+  belongs_to :account
   belongs_to :employee
   belongs_to :location
 
-  validates :staff, :topic, :employee_id, :location_id, :due_by, :presence => true
+  validates :account_id, :staff, :topic, :employee_id, :location_id, :due_by, :presence => true
   validates_associated :employee
 
 end

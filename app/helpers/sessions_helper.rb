@@ -14,7 +14,11 @@ module SessionsHelper
   end
 
   def current_user
-    @current_user ||= User.find_by_remember_token(cookies[:remember_token])
+    query = {}
+    query[:remember_token] = cookies[:remember_token]
+    query.merge!(@base_query)
+    # @current_user ||= User.find_by_remember_token(cookies[:remember_token])
+    @current_user ||= User.where(query)
   end
 
   def sign_out

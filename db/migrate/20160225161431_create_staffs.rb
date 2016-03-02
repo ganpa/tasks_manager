@@ -3,7 +3,7 @@ class CreateStaffs < ActiveRecord::Migration
     create_table :staffs do |t|
       t.string :name
       t.string :desk
-
+      t.integer :account_id
       t.timestamps
     end
   end

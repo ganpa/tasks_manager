@@ -2,6 +2,7 @@ require 'json'
 
 class TasksController < ApplicationController
 
+  before_filter :current_account
   before_filter :require_login
   
   def index
@@ -10,15 +11,18 @@ class TasksController < ApplicationController
 
     query_params = request.query_parameters
     if !query_params.empty?
-      query = query_params
+      query = @base_query
+      query.merge!(query_params)
       # puts "query: #{query}, query_parameters: #{query_params}"
       if query_params.has_key?("status")
         query["is_completed"] = query_params["status"].casecmp("CLOSED") == 0
         query.delete("status")
       end
+      # query.merge!(@base_query)
+      # query[:account_id] = @current_account
       tasks = Task.where(query)
     else
-      tasks = Task.all
+      tasks = Task.where(@base_query)
     end
     data = []
     tasks.each do |task|
@@ -31,12 +35,15 @@ class TasksController < ApplicationController
   end
 
   def topics
-    tasks = Task.uniq.pluck(:topic)
+    tasks = Task.where(@base_query).uniq.pluck(:topic)
     render :json => {"topics" => tasks }
   end
 
   def show
-    task = Task.find(params[:id])
+    query = @base_query
+    # query[:account_id] = @current_account
+    query[:id] = params[:id]
+    task = Task.where(query)
   rescue ActiveRecord::RecordNotFound
     return render :json => {"message" => "Task with id: #{params[:id]} not found"}, status: :not_found
     location = task.location
@@ -50,6 +57,7 @@ class TasksController < ApplicationController
     puts params
     puts "\n\n\n"
     task = Task.new do |t|
+      t.account = @current_account
       t.staff = params[:staff]
       t.topic = params[:topic]
       t.file_nums = params[:file_nums]
@@ -88,7 +96,10 @@ class TasksController < ApplicationController
     puts "\n\n\n" 
     puts "Hello"
     puts "\n\n"
-    task = Task.find(params[:id])
+    query = @base_query
+    # query[:account_id] = @current_account
+    query[:id] = params[:id]
+    task = Task.where(query).limit(1)
     task.is_completed = params[:completed]
     
     task.save

@@ -1,10 +1,13 @@
 class UsersController < ApplicationController
+
+  before_filter :current_account
   def create
     if !params.has_key?("name") || !params[:password] || !params[:password_confirmation]
       render :json => {"messages" => ["Invalid username/password"]}, status: :bad_request
     end
 
     user = User.new do |u|
+      u.account = @current_account
       u.name = params[:name]
       #u.email = params[:email]
       u.password = params[:password]
@@ -21,7 +24,10 @@ class UsersController < ApplicationController
     puts "parameters: #{params}"
     puts "cookies: #{cookies.to_json}"
     puts "session : #{session}"
-    user = User.find_by_remember_token(cookies[:remember_token])
+    query = {}
+    query[:remember_token] = cookies[:remember_token]
+    query.merge!(@base_query)
+    user = User.where(query).limit(1).first
     if !user.nil?
       return render :json => {"name" => user.name}
     else

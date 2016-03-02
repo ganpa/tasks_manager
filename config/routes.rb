@@ -1,5 +1,7 @@
 SampleApp::Application.routes.draw do
 
+  get "accounts/subdomain_taken" => "accounts#subdomain_taken?"
+
   get "locations/types" => "locations#types"
 
   get "locations/:id/sublocations" => "locations#sub_locations"
@@ -19,6 +21,7 @@ SampleApp::Application.routes.draw do
   resources :tasks, :locations, :employees
   resources :sessions, only: [:new, :create, :destroy]
   resources :users, only: [:create, :index]
+  resources :accounts, only: [:create, :index]
   #resource :home, :only => :index
   root :to => 'home#index'
 

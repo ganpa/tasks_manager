@@ -23,7 +23,7 @@ app.controller('SigninController', ['$scope', '$state', '$controller', 'SigninSe
       $state.transitionTo("dashboard");
     }, function(response){
         //alert("hee");
-        $scope.alert(response.data.messages[0]);
+        $scope.alert(response.data.message);
         console.log(response);
     });
   };

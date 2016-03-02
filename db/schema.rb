@@ -11,13 +11,27 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20160227093125) do
+ActiveRecord::Schema.define(:version => 20160301163316) do
+
+  create_table "accounts", :force => true do |t|
+    t.string   "name"
+    t.string   "email"
+    t.string   "plan"
+    t.string   "language"
+    t.string   "location_context"
+    t.string   "location_name"
+    t.integer  "location_id"
+    t.string   "subdomain"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+  end
 
   create_table "employees", :force => true do |t|
     t.string   "position"
     t.string   "name"
     t.integer  "total_score"
     t.integer  "location_id"
+    t.integer  "account_id"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
   end
@@ -34,6 +48,7 @@ ActiveRecord::Schema.define(:version => 20160227093125) do
   create_table "staffs", :force => true do |t|
     t.string   "name"
     t.string   "desk"
+    t.integer  "account_id"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
@@ -47,6 +62,7 @@ ActiveRecord::Schema.define(:version => 20160227093125) do
     t.boolean  "is_completed"
     t.integer  "employee_id"
     t.integer  "location_id"
+    t.integer  "account_id"
     t.datetime "created_at",   :null => false
     t.datetime "updated_at",   :null => false
   end
@@ -56,6 +72,7 @@ ActiveRecord::Schema.define(:version => 20160227093125) do
     t.string   "email"
     t.string   "password_digest"
     t.string   "remember_token"
+    t.integer  "account_id"
     t.datetime "created_at",      :null => false
     t.datetime "updated_at",      :null => false
   end

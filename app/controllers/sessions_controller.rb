@@ -1,4 +1,7 @@
 class SessionsController < ApplicationController
+
+  before_filter :current_account
+  
   def new
   end
 
@@ -17,16 +20,20 @@ class SessionsController < ApplicationController
       return render :json => {}, status: :bad_request
     end
     
-    user = User.find_by_name(params[:name].downcase)
+    query = @base_query
+    query[:name] = params[:name].downcase
+    puts "query :#{query}"
+    user = User.where(query).limit(1).first
 
     if user.nil?
       return render :json => {"messages" => ["Invalid username/password"]}, status: :bad_request
-    elsif user && user.authenticate(params[:password])
+    end
+
+    if user && user.authenticate(params[:password])
       puts "user: #{user.to_json}"
       sign_in(user)
     else
       return render :json => {"messages" => ["Invalid username/password"]}, status: :bad_request
-
     end
     # render :json => {}
     render :json => {}, status: :ok

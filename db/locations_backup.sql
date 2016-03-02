@@ -19,10 +19,10 @@
 -- Table structure for table `locations`
 --
 
-/*DROP TABLE IF EXISTS `locations`;*/
+DROP TABLE IF EXISTS `locations`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-/*CREATE TABLE `locations` (
+CREATE TABLE `locations` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `location_type` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -31,7 +31,7 @@
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;*/
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -40,7 +40,7 @@
 
 LOCK TABLES `locations` WRITE;
 /*!40000 ALTER TABLE `locations` DISABLE KEYS */;
-INSERT INTO `locations` VALUES (4,'Mandaveli','Taluk',NULL,-1,'2016-02-25 18:38:44','2016-02-25 18:38:44'),(5,'Zone1','Zone',NULL,4,'2016-02-25 18:38:54','2016-02-25 18:38:54'),(6,'Firkha1','Firkha',NULL,5,'2016-02-25 18:39:04','2016-02-25 18:39:04'),(7,'Kooniyur','Village',NULL,6,'2016-02-25 18:39:21','2016-02-25 18:39:21');
+INSERT INTO `locations` VALUES (4,'Mandaveli','Taluk',NULL,-1,'2016-02-25 18:38:44','2016-02-25 18:38:44'),(5,'Zone1','Zone',NULL,4,'2016-02-25 18:38:54','2016-02-25 18:38:54'),(6,'Firkha1','Firkha',NULL,5,'2016-02-25 18:39:04','2016-02-25 18:39:04'),(7,'Kooniyur','Village',NULL,6,'2016-02-25 18:39:21','2016-02-25 18:39:21'),(8,'test taluk','Taluk',NULL,-1,'2016-02-28 08:38:21','2016-02-28 08:38:21'),(9,'Mylapore','Taluk',NULL,-1,'2016-02-28 16:13:41','2016-02-28 16:13:41'),(10,'Triplicane','Taluk',NULL,-1,'2016-02-28 16:17:06','2016-02-28 16:17:06'),(11,'Vadapazhani','Taluk',NULL,-1,'2016-02-28 16:19:43','2016-02-28 16:19:43'),(12,'zone1','Zone',NULL,9,'2016-02-28 16:20:34','2016-02-28 16:20:34'),(13,'mylapore_firkha','Firkha',NULL,12,'2016-02-28 16:48:41','2016-02-28 16:48:41'),(14,'test','Taluk',NULL,-1,'2016-02-28 18:00:56','2016-02-28 18:00:56');
 /*!40000 ALTER TABLE `locations` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -53,4 +53,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-02-27 17:40:26
+-- Dump completed on 2016-03-01 21:55:47

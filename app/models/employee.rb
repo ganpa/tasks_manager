@@ -12,10 +12,11 @@
 #
 
 class Employee < ActiveRecord::Base
-  attr_accessible :name, :position, :total_score, :location_id
+  attr_accessible :name, :position, :total_score, :location_id, :account_id
 
   has_many :tasks
   belongs_to :location
+  belongs_to :account
 
-  validates :name, :position, :location_id, :presence => true
+  validates :account_id, :name, :position, :location_id, :presence => true
 end

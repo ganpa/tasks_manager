@@ -1,7 +1,11 @@
 require 'roo'
 
 class LocationsController < ApplicationController
+  include LocationsHelper
+  include EmployeesHelper
+
     
+  before_filter :current_account
   before_filter :require_login
   
   def index
@@ -37,7 +41,7 @@ class LocationsController < ApplicationController
     end
     sub_locations = location.sub_locations
     if sub_locations.empty?
-      location_types = LocationsHelper.get_location_types
+      location_types = get_location_types
       index = location_types.index(location.location_type)
       sub_location_type = location_types[index+1]
       render :json => { sub_location_type => []}
@@ -67,7 +71,7 @@ class LocationsController < ApplicationController
       value = get_location_type_by_employee_type(request.query_parameters["employee_type"]) 
       key = :location_type
     else
-      value = LocationsHelper.get_location_types
+      value = get_location_types
       key = :location_types
     end
     render :json => { key => value }
@@ -80,7 +84,7 @@ class LocationsController < ApplicationController
   # end
 
   def get_location_type_by_employee_type(employee_type)
-    LocationsHelper::POSITION_MAPPER[employee_type]
+    POSITION_MAPPER[employee_type]
   end
 
   def create
@@ -89,22 +93,17 @@ class LocationsController < ApplicationController
     else
       create_simple
     end
-
-    #render :json => {}
-  end
-
-  def create_location(location_hash)
-    location = Location.new do |l|
-      l.name = location_hash[:location_name]
-      l.location_type = location_hash[:location_type]
-      l.parent_id = location_hash[:parent_id]
-    end
-    location
   end
 
   
+
+  
   def create_simple
-    location = create_location(params)
+    begin
+      location = create_location(params)
+    rescue ArgumentError => e
+      return render :json => {"message" => e.message}, status: :bad_request
+    end
     puts "location: #{location.to_json} is_valid: #{location.valid?}"
     
     if !location.save
@@ -117,10 +116,23 @@ class LocationsController < ApplicationController
 
   def create_from_file
     file = Roo::Spreadsheet.open(params[:file], {:extension => "xlsx"});
-
     #puts file.methods.sort!
-    # puts file.sheets
-    # puts file.headers
+    puts file.inspect
+    puts file.sheets
+     puts file.headers
+
+    file.sheets.each do |sheet|
+      sh = file.sheet_for(sheet)
+      puts "\n Sheet : #{sheet}"
+      sh.each_row do |entries|
+        entries.each do |cell|
+          puts "\n\n cell: #{cell.coordinate.row}, #{cell.coordinate.column} = #{cell.value}"
+        end
+      end
+
+      puts "\n\n\n"
+
+    end
     # puts file.first_row
     # first_column = file.first_column
 
@@ -128,7 +140,7 @@ class LocationsController < ApplicationController
     # puts "file_methods :#{file.methods}"
     location_hash = {}
     file.each_entry do |entry|
-      puts "entry: #{entry[0]}"
+      # puts "entry: #{entry.inspect}"
       location_hash[:location_type] = params[:location_type]
       location_hash[:parent_id] = params[:parent_id]
       location_hash[:location_name] = entry[0] if !entry[0].nil?
@@ -145,6 +157,25 @@ class LocationsController < ApplicationController
     # end
 
     render :json => {"message" => "uploaded file"}
+  end
+
+  def create_location(location_hash)
+    ltype = location_hash[:location_type]
+    ptype = Location.find(location_hash[:parent_id]).pluck(:location_type)
+    
+    ptype_index = LOCATION_TYPES.index(ptype) 
+    ltype_index = LOCATION_TYPES.index(ltype)
+
+    if ltype_index - ptype_index != 1
+      raise ArgumentError, "Location type cant be '#{ltype}' for parent_id '#{location_hash[:parent_id]}'"
+    end
+
+    location = Location.new do |l|
+      l.name = location_hash[:location_name]
+      l.location_type = location_hash[:location_type]
+      l.parent_id = location_hash[:parent_id]
+    end
+    location
   end
 
 
