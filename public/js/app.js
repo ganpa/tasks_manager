@@ -141,7 +141,7 @@ app.controller("HomeController", ['$scope','$rootScope', '$cookies', '$state', '
       console.log("host", $location.host());
       var subdomains = $location.host().split(".");
       console.log("subdomains", subdomains);
-      if(subdomains.length == 1){
+      if(subdomains.length == 3){
         $state.transitionTo("signup");
         return;
       }
