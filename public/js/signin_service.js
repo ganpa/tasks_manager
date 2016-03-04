@@ -2,11 +2,18 @@ app.service('SigninService', ['$http', '$state',
   function($http, $state){
     var signin_service = {};
 
-    signin_service.is_signed_in = function(){
+    signin_service.is_signed_in = function(success, error){
       $http.get('/is_signed_in').then(function(response){
         if(!(response.data.sign_in)){
           $state.transitionTo('signin');
         }
+        if(success != null){
+          success(response);
+        }
+      }, function(response){
+          if(error != null){
+            error(response);
+          }
       });
     };
 

@@ -1,8 +1,11 @@
-app.controller('NewLocationController', ['$scope', '$controller', '$location', 
+app.controller('NewLocationController', ['$scope', '$rootScope', '$state', '$controller', '$location', 
     'Upload', 'LocationService', 'SigninService',
-function($scope, $controller, $location, Upload, LocationService, SigninService){
+function($scope, $rootScope, $state, $controller, $location, Upload, LocationService, SigninService){
     
   $scope.init = function(){
+
+    console.log("rootScope account", $rootScope.account);
+    
     SigninService.is_signed_in();
 
     $scope.name = "location";
@@ -35,8 +38,13 @@ function($scope, $controller, $location, Upload, LocationService, SigninService)
       data: data
     }).then(function (resp) {
         console.log('Success ' + resp.config.data.file.name + 'uploaded. Response: ' + resp.data);
+        $scope.alert("Successfully created locations", true);
+        $state.transitionTo("alert");
+
     }, function (resp) {
         console.log('Error status: ' + resp.status);
+        $scope.alert("Failed to create locations", false);
+        $state.transitionTo("alert");
     }, function (evt) {
         var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
         console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
@@ -52,7 +60,7 @@ function($scope, $controller, $location, Upload, LocationService, SigninService)
     if($scope.location_type_num > 0)
       data["parent_id"] = $scope.get_location_id($scope.location_type_num-1);
     else
-      data["parent_id"] = -1;
+      data["parent_id"] = $rootScope.account.location_id;
 
     if(!($scope.input_type == "Default")){
       data["input_type"] = "file";
@@ -64,10 +72,12 @@ function($scope, $controller, $location, Upload, LocationService, SigninService)
       data["location_name"] = $scope.location_types_value[$scope.location_type_num];
       LocationService.create_location(data, function(){
         console.log("create success");
-        $scope.alert("Successfully created location " + data["location_name"]);
+        $scope.alert("Successfully created location " + data["location_name"] + "!", true);
+        $state.transitionTo("alert");
       }, function(response){
           //console.log("failed to create location");
-          $scope.alert("Failed to create location");
+          $scope.alert("Failed to create location !", false);
+          $state.transitionTo("alert");
       });
     }
     console.log("data", data);

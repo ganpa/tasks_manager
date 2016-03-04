@@ -1,5 +1,5 @@
-app.controller('SigninController', ['$scope', '$state', '$controller', 'SigninService', 'AlertService',
-  function($scope, $state, $controller, SigninService, AlertService){
+app.controller('SigninController', ['$scope', '$rootScope', '$state', '$controller', 'SigninService', 'AlertService',
+  function($scope, $rootScope, $state, $controller, SigninService, AlertService){
   $scope.remember_me = false;
   // $scope.is_alert = false;
   $controller("AlertController", {$scope:$scope});
@@ -20,10 +20,13 @@ app.controller('SigninController', ['$scope', '$state', '$controller', 'SigninSe
 
     SigninService.signin(data, function(response){
       console.log("response", response);
+      $rootScope.account = response.data.account;
       $state.transitionTo("dashboard");
     }, function(response){
         //alert("hee");
-        $scope.alert(response.data.message);
+        $scope.is_alert = true;
+        $scope.alert("Signin Failed. Please try again", false);
+        // $state.transitionTo("alert");
         console.log(response);
     });
   };

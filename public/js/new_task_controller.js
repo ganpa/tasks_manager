@@ -1,6 +1,6 @@
-app.controller('NewTaskController', ['$rootScope', '$scope', '$http', '$controller', 
+app.controller('NewTaskController', ['$rootScope', '$scope', '$state', '$http', '$controller', 
   '$location', 'EmployeeService', 'AlertService', 'SigninService',
-  function($rootScope, $scope, $http, $controller, $location, EmployeeService, AlertService, SigninService){
+  function($rootScope, $scope, $state, $http, $controller, $location, EmployeeService, AlertService, SigninService){
   
   $scope.init = function(){
     SigninService.is_signed_in();
@@ -63,10 +63,13 @@ app.controller('NewTaskController', ['$rootScope', '$scope', '$http', '$controll
       console.log("task respnose", response);
       //AlertService.clearMessage();
       //AlertService.setMessage("Successfully created with tasks with id " + response.data.id);
-      $scope.alert("Successfully created task with id " + response.data.id);
+      $scope.alert("Successfully created task with id " + response.data.id + " ! ", true);
+      $state.transitionTo("alert");
       //$location.path("/tasks");
-    }, function(respnose){
-        $scope.alert("Failed to create task");
+    }, function(response){
+        console.log("respnose", response);
+        $scope.alert("Failed to create task !", false);
+        $state.transitionTo("alert");
     });
   }
 

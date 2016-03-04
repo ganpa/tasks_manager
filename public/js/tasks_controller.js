@@ -35,6 +35,7 @@ app.controller('TasksController', ['$rootScope', '$scope', '$state',
       console.log("tasks", $scope.tasks);
     }, function(response){
          console.log("tasks response", response);
+         $state.transitionTo("server_error");
         // if(response.status == 307){
         //   AlertService.setMessage(response.data.message);
         //   $state.transitionTo("signin")
@@ -44,6 +45,8 @@ app.controller('TasksController', ['$rootScope', '$scope', '$state',
     $http.get("tasks/topics").then(function(response){
       $scope.topics = response.data["topics"]
       $scope.topics.unshift(ANY);
+    }, function(response){
+        $state.transitionTo("server_error");
     });
   };
 
@@ -80,11 +83,19 @@ app.controller('TasksController', ['$rootScope', '$scope', '$state',
     });
   };
 
-  $scope.setCompleted = function(task){
+  $scope.setCompleted = function(task, index){
     console.log("marked as completed");
     $http.put("/tasks/"+ task.id, {completed: true}).then(function(){
       console.log("task updated successfully");
-      task.completed = true;
+      $scope.tasks[index].is_completed = true;
+    }, function(response){
+        console.log("Failed to update task");
+        if(response.data.containsKey("message")){
+          console.log(response.data.message);
+        }
+        else if(response.data.containsKey("messages")){
+          console.log(response.data.messages);
+        }
     });
   };
 

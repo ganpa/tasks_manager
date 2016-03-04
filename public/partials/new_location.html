@@ -27,6 +27,7 @@
           <label class="col-sm-2 control-label">Location Type </label>
           <div class="col-sm-4">
             <select  ng-model="location_type" class="form-control" ng-change="select_location_type()">
+              <option value="">--Select--</option>
               <option ng-repeat=" _location_type in location_types" value="{{_location_type}}"> 
                 {{_location_type}} 
               </option>
@@ -49,6 +50,7 @@
             <input type="text" ng-model="location_types_value[$index]" ng-show="location_type_num==$index && !input_bulk" name="" class="form-control" id="" placeholder="">
             <select  ng-model="location_types_value[$index]" class="form-control" 
                       ng-show="location_type_num>$index" ng-change="location_type_value_select($index)">
+              <!-- <option value="">--Select--</option> -->
               <option ng-repeat=" _location in locations[$index]" value="{{_location}}"> 
                 {{_location}} 
               </option>

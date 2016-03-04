@@ -1,21 +1,19 @@
 <div class="row">
   <div class="col-sm-2">
   </div>
-  <div ng-show="is_alert">
   <div class="col-sm-8">
-    <div class="alert alert-danger alert-dismissible" role="alert">
+    <div class="alert alert-info alert-dismissible" role="alert" ng-show="is_alert">
       {{ alert_message }}
     </div>
   </div>
 </div>
-</div>
 <div class="row">
-  <div class="col-sm-4">
+  <div class="col-sm-3">
   </div>
-  <div class="col-sm-4">
+  <div class="col-sm-6">
 <div class="panel panel-default">
   <div class="panel-heading"> 
-    Sign in
+    New User
     
    </div>
    
@@ -26,25 +24,26 @@
   <!-- <div class="col-sm-4 col-sm-offset-3"> -->
    <form class="form-horizontal col-sm-offset-0">
     <div class="form-group">
-      <label for="name" class="col-sm-3 control-label">Username</label>
-      <div class="col-sm-7">
+      <label for="name" class="col-sm-4 control-label">Username </label>
+      <div class="col-sm-6">
         <input type="text" class="form-control" ng-model="name" placeholder="Username">
       </div>
     </div>
     <div class="form-group">
-      <label for="password" class="col-sm-3 control-label">Password</label>
-      <div class="col-sm-7">
+      <label for="password" class="col-sm-4 control-label">Password</label>
+      <div class="col-sm-6">
         <input type="password" class="form-control"  ng-model="password" placeholder="Password">
       </div>
     </div>
     <div class="form-group">
-      <div class="col-sm-7 col-sm-offset-3">
-        <input type="checkbox" ng-model="remember_me"> Remember Me
+      <label for="password_confirmation" class="col-sm-4 control-label">Confirm Password </label>
+      <div class="col-sm-6">
+        <input type="password" class="form-control"  ng-model="password_confirmation" placeholder="Confirm Password">
       </div>
     </div>
     <div class="form-group">
-      <div class="col-sm-offset-4 col-sm-10">
-        <button type="submit" class="btn btn-default" ng-click="signin()">Signin</button>
+      <div class="col-sm-offset-5 col-sm-4">
+        <button type="submit" class="btn btn-default" ng-click="signup()">Create User</button>
       </div>
     </div>
   </form>
@@ -52,8 +51,8 @@
 </div>
 </div>
 </div> <!-- panel body -->
-<!-- <div class="panel-footer">
-    <center><a ui-sref="signup"> Signup </a><center>
-</div> -->
+<!-- <div class="panel-footer"> -->
+    <!-- <center><a ui-sref="signin"> Signin </a><center> -->
+<!-- </div> -->
 </div>
 </div> <!-- panel -->

@@ -11,9 +11,13 @@ app.factory('LocationService', ['$http', function($http){
     });
   };
 
-  location_service.get_sublocations = function(location_id, call_back){
+  location_service.get_sublocations = function(location_id, success, error){
     $http.get("/locations/" + location_id + "/sublocations").then(function(response){
-      call_back(response);
+      success(response);
+    }, function(response){
+      if(error != null){
+        error(response);
+      }
     });
   };
 

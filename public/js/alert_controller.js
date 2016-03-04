@@ -1,18 +1,19 @@
-app.controller('AlertController', ['$scope', 'AlertService', function($scope, AlertService){
+app.controller('AlertController', ['$scope', '$rootScope', 'AlertService', 
+  function($scope, $rootScope, AlertService){
 
   $scope.alert_init = function(){
-    $scope.is_alert = false;
-    if (AlertService.hasMessage()){
-      console.log("hasMessage", AlertService.getMessage());
-      $scope.alert(AlertService.getMessage());
-      AlertService.clearMessage();
-    }
+    $rootScope.is_alert = false;
+    // if (AlertService.hasMessage()){
+    //   console.log("hasMessage", AlertService.getMessage());
+    //   $scope.alert(AlertService.getMessage(), true);
+    //   AlertService.clearMessage();
+    // }
   };
 
-  $scope.alert = function(message){
+  $scope.alert = function(message, is_success){
     console.log("alert  called", message);
-    $scope.alert_message = message;
-    $scope.is_alert = true;
-
+    $rootScope.alert_message = message;
+    $rootScope.is_alert = true;
+    $rootScope.success = is_success;
   };
 }]);
