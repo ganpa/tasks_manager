@@ -1,12 +1,12 @@
 require 'roo'
 
 class LocationsController < ApplicationController
-  include LocationsHelper
-  include EmployeesHelper
+  # include LocationsHelper
+  # include EmployeesHelper
 
     
-  before_filter :current_account
-  before_filter :require_login
+  before_filter :current_account, :only => [:create, :types]
+  before_filter :require_login, :only => :create
   
   def index
     puts "cookies: #{cookies.to_json}"
@@ -37,7 +37,7 @@ class LocationsController < ApplicationController
     begin
       location = Location.find(location_id)
       rescue ActiveRecord::RecordNotFound
-        return render :json => {"message" => "Locatoin with id: #{params[:id]}not found"}, status: :not_found
+        return render :json => {"message" => "Location with id: #{params[:id]}not found"}, status: :not_found
     end
     sub_locations = location.sub_locations
     if sub_locations.empty?
@@ -114,55 +114,82 @@ class LocationsController < ApplicationController
 
   end
 
+  def location_save_error(location)
+    render :json => {"messages" => location.errors.messages}, status: :bad_request
+  end
+
   def create_from_file
+    if !@current_account.location_context.casecmp("Division") == 0
+      return render :json => {"message" => "location context not valid"}, status: :bad_request
+    end
     file = Roo::Spreadsheet.open(params[:file], {:extension => "xlsx"});
-    #puts file.methods.sort!
-    puts file.inspect
-    puts file.sheets
-     puts file.headers
+
+    types = get_location_types
+    parent_ids = [@current_account.location_id]
+    # parent_ids = ["100"]
 
     file.sheets.each do |sheet|
+      location_hash = {:location_name => sheet, :location_type => types[0], :parent_id => parent_ids[0]}
+      taluk = create_location(location_hash)
+      puts "valid: #{taluk.valid?}, taluk: #{taluk.to_json}"
+
+      if !taluk.save
+        return location_save_error(taluk)
+      end
+      parent_ids[1] = taluk.id
+      # parent_ids[1] = 0
+
       sh = file.sheet_for(sheet)
-      puts "\n Sheet : #{sheet}"
+      # puts "\n Sheet : #{sheet}"
+
       sh.each_row do |entries|
-        entries.each do |cell|
-          puts "\n\n cell: #{cell.coordinate.row}, #{cell.coordinate.column} = #{cell.value}"
+        next if entries.empty?
+        cell = entries.first
+        row = cell.coordinate.row
+        next if row < 4
+
+        entries.each_with_index do |cell, index|
+          # puts "index: #{index}"
+          next if index < 1
+          if !cell.value.nil?
+            location_hash = {:location_name => cell.value, :location_type => types[index], :parent_id => parent_ids[index]}
+            location = create_location(location_hash)
+            puts "valid: #{location.valid?}, location: #{location.to_json}"
+
+            if !location.save
+              return location_save_error(location)
+            end
+            puts "location: #{location.to_json}, valid: location.valid?"
+
+            parent_ids[index+1] = location.id
+            # parent_ids[index+1] = index
+
+            col = cell.coordinate.column
+            type = types[index]
+
+            #puts "index: #{index}, cell: #{cell.value}, type: #{type}, row: #{cell.coordinate.row}, col: #{cell.coordinate.column}"
+            # puts "hash: #{location_hash.to_json}"
+
+          end
+          # puts "\n\n cell: #{cell.coordinate.row}, #{cell.coordinate.column} = #{cell.value}"
         end
       end
 
       puts "\n\n\n"
 
     end
-    # puts file.first_row
-    # first_column = file.first_column
-
-    # puts "file: #{file.inspect}"
-    # puts "file_methods :#{file.methods}"
-    location_hash = {}
-    file.each_entry do |entry|
-      # puts "entry: #{entry.inspect}"
-      location_hash[:location_type] = params[:location_type]
-      location_hash[:parent_id] = params[:parent_id]
-      location_hash[:location_name] = entry[0] if !entry[0].nil?
-      location = create_location(location_hash)
-      puts "location: #{location.to_json} is_valid: #{location.valid?}"
-    end
-
-    # puts "\n Row \n"
-    # file.each_row_streaming do |row|
-    #   puts "\n\n#{row[first_column-1].inspect}"
-    #   # row.each do |cell|
-    #   #   puts "row:#{cell.coordinate.row}, column:#{cell.coordinate.column}, value:#{cell.value}"
-    #   # end
-    # end
-
     render :json => {"message" => "uploaded file"}
   end
 
   def create_location(location_hash)
     ltype = location_hash[:location_type]
-    ptype = Location.find(location_hash[:parent_id]).pluck(:location_type)
-    
+    parent = Location.find(location_hash[:parent_id])
+
+    if parent.nil?
+      raise ArgumentError, "Parent with id : '#{location_hash[:parent_id]}' not found"
+    end
+
+    ptype = parent.location_type
     ptype_index = LOCATION_TYPES.index(ptype) 
     ltype_index = LOCATION_TYPES.index(ltype)
 

@@ -1,6 +1,10 @@
 SampleApp::Application.routes.draw do
 
+  get "accounts/account_exists" => "accounts#account_exists"
+  
   get "accounts/subdomain_taken" => "accounts#subdomain_taken?"
+
+  get "accounts/location_types" => "accounts#location_types"
 
   get "locations/types" => "locations#types"
 
@@ -17,6 +21,10 @@ SampleApp::Application.routes.draw do
   get "/signout" => "sessions#destroy"
 
   get "/is_signed_in" => "sessions#is_signed_in"
+
+  get "/current_user" => "sessions#get_current_user"
+
+  get "users/current_user" => "users#current_user"
 
   resources :tasks, :locations, :employees
   resources :sessions, only: [:new, :create, :destroy]

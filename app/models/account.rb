@@ -1,6 +1,6 @@
 class Account < ActiveRecord::Base
-  attr_accessible :email, :language, :location_context, :location_name, :location_id
-                  :name, :plan, :subdomain,
+  attr_accessible :email, :language, :location_context, :location_name, :location_id,
+                  :name, :plan, :subdomain
 
   has_many :employees 
   has_many :users

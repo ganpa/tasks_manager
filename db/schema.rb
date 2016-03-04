@@ -41,6 +41,7 @@ ActiveRecord::Schema.define(:version => 20160301163316) do
     t.string   "location_type"
     t.string   "pin"
     t.integer  "parent_id"
+    t.integer  "account_id"
     t.datetime "created_at",    :null => false
     t.datetime "updated_at",    :null => false
   end
@@ -54,6 +55,7 @@ ActiveRecord::Schema.define(:version => 20160301163316) do
   end
 
   create_table "tasks", :force => true do |t|
+    t.string   "number"
     t.string   "staff"
     t.string   "topic"
     t.text     "file_nums"
@@ -72,6 +74,8 @@ ActiveRecord::Schema.define(:version => 20160301163316) do
     t.string   "email"
     t.string   "password_digest"
     t.string   "remember_token"
+    t.string   "role"
+    t.string   "home_page"
     t.integer  "account_id"
     t.datetime "created_at",      :null => false
     t.datetime "updated_at",      :null => false

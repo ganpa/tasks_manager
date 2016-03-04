@@ -5,6 +5,7 @@ class CreateLocations < ActiveRecord::Migration
       t.string :location_type
       t.string :pin
       t.integer :parent_id
+      t.integer :account_id
 
       t.timestamps
     end

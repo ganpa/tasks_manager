@@ -43,9 +43,11 @@ class TasksController < ApplicationController
     query = @base_query
     # query[:account_id] = @current_account
     query[:id] = params[:id]
-    task = Task.where(query)
-  rescue ActiveRecord::RecordNotFound
-    return render :json => {"message" => "Task with id: #{params[:id]} not found"}, status: :not_found
+    task = Task.where(query).limit(1).first
+  # rescue ActiveRecord::RecordNotFound
+    if task.nil?
+      return render :json => {"message" => "Task with id: #{params[:id]} not found"}, status: :not_found
+    end
     location = task.location
     data = task
     data[:location] = location
@@ -56,8 +58,10 @@ class TasksController < ApplicationController
     puts "attachments"
     puts params
     puts "\n\n\n"
+    number = Task.where(@base_query).count + 1
     task = Task.new do |t|
       t.account = @current_account
+      t.number = number
       t.staff = params[:staff]
       t.topic = params[:topic]
       t.file_nums = params[:file_nums]
@@ -70,13 +74,14 @@ class TasksController < ApplicationController
         puts "creating new employee"
         emp_hash = params[:employee]
         emp_hash[:location_id] = location_id
+        emp_hash[:account_id] = @current_account.id
         employee = Employee.new(emp_hash)
       else
         puts "updating employee: #{emp_value.to_json}"
         employee = emp_value
         employee.name = params[:employee][:name]
       end
-      puts "employee: #{employee}, valid: #{employee.valid?}"
+      puts "employee: #{employee.to_json}, valid: #{employee.valid?}"
       if !employee.save
         return render :json => {"messages" => employee.errors.messages}, status: :bad_request
       end
@@ -99,10 +104,15 @@ class TasksController < ApplicationController
     query = @base_query
     # query[:account_id] = @current_account
     query[:id] = params[:id]
-    task = Task.where(query).limit(1)
+    task = Task.where(query).limit(1).first
+    if task.nil?
+      return render :json => {"message" => "Task with id:#{params[:id]} not found"}, status: :bad_request 
+    end
+
     task.is_completed = params[:completed]
-    
-    task.save
+    if !task.save
+      return render :json => {"messages" => task.errors.messages}, status: :bad_request
+    end
 
     #@task.update_attributes({:completed => true})
     #redirect_to  :action => :index#tasks_path

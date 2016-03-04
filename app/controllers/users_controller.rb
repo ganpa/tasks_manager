@@ -1,6 +1,8 @@
 class UsersController < ApplicationController
 
   before_filter :current_account
+  # before_filter :require_login
+
   def create
     if !params.has_key?("name") || !params[:password] || !params[:password_confirmation]
       render :json => {"messages" => ["Invalid username/password"]}, status: :bad_request
@@ -18,9 +20,12 @@ class UsersController < ApplicationController
     end
     puts "user: #{user.to_json}"
     render :json => {}
+    # redirect_to controller: :session, action: :create
+    #redirect_to signin_url, status: 303
+
   end
 
-  def index
+  def current_user
     puts "parameters: #{params}"
     puts "cookies: #{cookies.to_json}"
     puts "session : #{session}"
@@ -33,5 +38,14 @@ class UsersController < ApplicationController
     else
       return render :json => {"messages" => ["user not found"]}
     end
+  end
+
+  def index
+    puts "parameters: #{params}"
+    puts "cookies: #{cookies.to_json}"
+    puts "session : #{session}"
+    query = @base_query
+    users = User.where(query).pluck(:name)
+    return render :json => {"users" => users}
   end
 end

@@ -15,6 +15,14 @@ class SessionsController < ApplicationController
     return render :json => {"sign_in" => result}, status: :ok
   end
 
+  def get_current_user
+    if signed_in?
+      return render :json => {"user" => @current_user.name}
+    else
+      return render :json => {"message" => "Please signin"}, status: :bad_request
+    end
+  end
+
   def create
     if !params.has_key?("name") || !params.has_key?("password")
       return render :json => {}, status: :bad_request
@@ -36,7 +44,7 @@ class SessionsController < ApplicationController
       return render :json => {"messages" => ["Invalid username/password"]}, status: :bad_request
     end
     # render :json => {}
-    render :json => {}, status: :ok
+    render :json => {"account" => @current_account}, status: :ok
   end
 
   def destroy

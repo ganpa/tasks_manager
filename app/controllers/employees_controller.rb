@@ -1,8 +1,9 @@
 class EmployeesController < ApplicationController
-  include LocationsHelper
-  include EmployeesHelper
+  # include LocationsHelper
+  # include EmployeesHelper
 
-  before_filter :current_account, :require_login
+  before_filter :current_account
+  before_filter :require_login
 
   def index
     # if request.query_parameters.has_key?("location_name") && request.query_parameters["location_type"]
@@ -46,9 +47,19 @@ class EmployeesController < ApplicationController
   end
 
   def create
+    employee = Employee.find_by_location_id(params[:location_id])
+    if !employee.nil?
+      employee.name = params[:name]
+      if !employee.save
+        return render :json => {"messages" => employee.errors.messages}, status: :bad_request
+      end
+      return render :json => {}
+    end
+    
     emp = Employee.new do |e|
       e.name = params[:name]
       e.position = params[:position]
+      e.account_id = @current_account.id
       #e.location = Location.find(params[:location_id])
       e.location_id = params[:location_id]
     end

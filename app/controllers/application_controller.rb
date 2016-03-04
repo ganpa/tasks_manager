@@ -1,7 +1,9 @@
 class ApplicationController < ActionController::Base
   #protect_from_forgery
-  include SessionsHelper
   include ApplicationHelper
+  include SessionsHelper
+  include LocationsHelper
+  include EmployeesHelper
 
   def handle_unverified_request
     puts "handle_unverified_request"

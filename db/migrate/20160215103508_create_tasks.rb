@@ -1,6 +1,7 @@
 class CreateTasks < ActiveRecord::Migration
   def change
     create_table :tasks do |t|
+      t.string :number
       t.string :staff
       t.string :topic
       t.text :file_nums

@@ -19,4 +19,5 @@ class Employee < ActiveRecord::Base
   belongs_to :account
 
   validates :account_id, :name, :position, :location_id, :presence => true
+  validates :name,  :uniqueness => {:scope => :location_id}
 end

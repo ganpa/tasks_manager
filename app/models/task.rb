@@ -20,13 +20,11 @@ class Task < ActiveRecord::Base
 
   serialize :file_nums, Array
 
-  alias_attribute :number, :id
-
   belongs_to :account
   belongs_to :employee
   belongs_to :location
 
-  validates :account_id, :staff, :topic, :employee_id, :location_id, :due_by, :presence => true
+  validates :account_id, :number, :staff, :topic, :employee_id, :location_id, :due_by, :presence => true
   validates_associated :employee
 
 end
