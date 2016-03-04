@@ -7,7 +7,7 @@ module ApplicationHelper
     res = request.host.split(".")
     puts "res: #{res.to_json}"
     return sub_domain_not_found("") if res.size > 2
-    if res.size == 2
+    if res.size >= 2
       subdomain = res[0]
       puts "subdomain: #{subdomain}"
       if subdomain.casecmp("admin")
