@@ -27,7 +27,7 @@
           <label class="col-sm-2 control-label">Location Type </label>
           <div class="col-sm-4">
             <select  ng-model="location_type" class="form-control" ng-change="select_location_type()">
-              <option value="">--Select--</option>
+              <!-- <option value="">Select</option> -->
               <option ng-repeat=" _location_type in location_types" value="{{_location_type}}"> 
                 {{_location_type}} 
               </option>
