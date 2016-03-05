@@ -20,9 +20,9 @@ class TasksController < ApplicationController
       end
       # query.merge!(@base_query)
       # query[:account_id] = @current_account
-      tasks = Task.where(query)
+      tasks = Task.where(query).order("is_completed ASC")
     else
-      tasks = Task.where(@base_query)
+      tasks = Task.where(@base_query).order("is_completed ASC")
     end
     data = []
     tasks.each do |task|
