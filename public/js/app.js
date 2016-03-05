@@ -137,17 +137,30 @@ app.controller("SignoutController", ['$scope', '$state', '$http', function($scop
 
 app.controller("HomeController", ['$scope','$rootScope', '$cookies', '$state', '$location', '$http', 'SigninService',
   function($scope, $rootScope, $cookies, $state, $location, $http, SigninService){
+    $rootScope.EXTENSION = "com";
+    $rootScope.APP_NAME = "copewithfiles";
+    // $rootScope.APP_NAME = "localhost";
+    $rootScope.WWW = "www";
+
     $scope.init = function(){
       console.log("host", $location.host());
       var subdomains = $location.host().split(".");
       console.log("subdomains", subdomains);
-      if(subdomains.length == 3){
+      if(subdomains.indexOf($rootScope.WWW) != -1){
+        subdomains.shift();
+        console.log("removing www", subdomains);
+      }
+      var app_index = subdomains.indexOf($rootScope.APP_NAME);
+      if(app_index == 0){
         $state.transitionTo("signup");
         return;
       }
+      subdomain = subdomains[0];
+      console.log("processing subdomain", subdomain);
+
       $http.get("/accounts/account_exists").then(function(response){
             console.log("acount exists", response);
-            $http.get("/accounts", {params: {"subdomain" : subdomains[0]}}).then(function(response){
+            $http.get("/accounts", {params: {"subdomain" : subdomain}}).then(function(response){
                 console.log("account", response);
                 $rootScope.account = response.data.account;
             }, function(response){
