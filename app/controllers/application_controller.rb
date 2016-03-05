@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
   include EmployeesHelper
 
   def handle_unverified_request
-    puts "handle_unverified_request"
+    # puts "handle_unverified_request"
     sign_out
     super
   end

@@ -9,8 +9,8 @@ class LocationsController < ApplicationController
   before_filter :require_login, :only => :create
   
   def index
-    puts "cookies: #{cookies.to_json}"
-    puts "request.host : #{request.host}"
+    # puts "cookies: #{cookies.to_json}"
+    # puts "request.host : #{request.host}"
     
     location_type = params[:location_type] if params.has_key?(:location_type)
     if params.has_key?(:location_type)
@@ -104,7 +104,7 @@ class LocationsController < ApplicationController
     rescue ArgumentError => e
       return render :json => {"message" => e.message}, status: :bad_request
     end
-    puts "location: #{location.to_json} is_valid: #{location.valid?}"
+    # puts "location: #{location.to_json} is_valid: #{location.valid?}"
     
     if !location.save
       return render :json => {"messages" => location.errors.messages}, status: :bad_request
@@ -131,7 +131,7 @@ class LocationsController < ApplicationController
     file.sheets.each do |sheet|
       location_hash = {:location_name => sheet, :location_type => types[0], :parent_id => parent_ids[0]}
       taluk = create_location(location_hash)
-      puts "valid: #{taluk.valid?}, taluk: #{taluk.to_json}"
+      # puts "valid: #{taluk.valid?}, taluk: #{taluk.to_json}"
 
       if !taluk.save
         return location_save_error(taluk)
@@ -154,12 +154,12 @@ class LocationsController < ApplicationController
           if !cell.value.nil?
             location_hash = {:location_name => cell.value, :location_type => types[index], :parent_id => parent_ids[index]}
             location = create_location(location_hash)
-            puts "valid: #{location.valid?}, location: #{location.to_json}"
+            # puts "valid: #{location.valid?}, location: #{location.to_json}"
 
             if !location.save
               return location_save_error(location)
             end
-            puts "location: #{location.to_json}, valid: location.valid?"
+            # puts "location: #{location.to_json}, valid: location.valid?"
 
             parent_ids[index+1] = location.id
             # parent_ids[index+1] = index
@@ -175,7 +175,7 @@ class LocationsController < ApplicationController
         end
       end
 
-      puts "\n\n\n"
+      # puts "\n\n\n"
 
     end
     render :json => {"message" => "uploaded file"}

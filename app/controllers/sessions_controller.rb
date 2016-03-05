@@ -30,7 +30,7 @@ class SessionsController < ApplicationController
     
     query = @base_query
     query[:name] = params[:name].downcase
-    puts "query :#{query}"
+    # puts "query :#{query}"
     user = User.where(query).limit(1).first
 
     if user.nil?
@@ -38,7 +38,7 @@ class SessionsController < ApplicationController
     end
 
     if user && user.authenticate(params[:password])
-      puts "user: #{user.to_json}"
+      # puts "user: #{user.to_json}"
       sign_in(user)
     else
       return render :json => {"messages" => ["Invalid username/password"]}, status: :bad_request

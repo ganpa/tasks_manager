@@ -55,9 +55,6 @@ class TasksController < ApplicationController
   end
 
   def create
-    puts "attachments"
-    puts params
-    puts "\n\n\n"
     number = Task.where(@base_query).count + 1
     task = Task.new do |t|
       t.account = @current_account
@@ -71,25 +68,23 @@ class TasksController < ApplicationController
       t.location_id = location_id
       emp_value = Employee.find_by_location_id(params[:location][:id])
       if emp_value.nil?
-        puts "creating new employee"
+        # puts "creating new employee"
         emp_hash = params[:employee]
         emp_hash[:location_id] = location_id
         emp_hash[:account_id] = @current_account.id
         employee = Employee.new(emp_hash)
       else
-        puts "updating employee: #{emp_value.to_json}"
+        # puts "updating employee: #{emp_value.to_json}"
         employee = emp_value
         employee.name = params[:employee][:name]
       end
-      puts "employee: #{employee.to_json}, valid: #{employee.valid?}"
+      # puts "employee: #{employee.to_json}, valid: #{employee.valid?}"
       if !employee.save
         return render :json => {"messages" => employee.errors.messages}, status: :bad_request
       end
       t.employee = employee
     end
-    # puts "\n\n\n" 
-    # puts (task.due_by - Date.current).to_i
-     puts "\n\n\ntask: #{task.to_json}, valid: #{task.valid?}, error: #{task.errors.messages.to_json}"
+     # puts "\n\n\ntask: #{task.to_json}, valid: #{task.valid?}, error: #{task.errors.messages.to_json}"
 
     if !task.save
       return render :json => {"messages" => task.errors.messages}, status: :bad_request
@@ -98,9 +93,9 @@ class TasksController < ApplicationController
   end
 
   def update
-    puts "\n\n\n" 
-    puts "Hello"
-    puts "\n\n"
+    # puts "\n\n\n" 
+    # puts "Hello"
+    # puts "\n\n"
     query = @base_query
     # query[:account_id] = @current_account
     query[:id] = params[:id]

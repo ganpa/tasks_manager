@@ -15,13 +15,13 @@ module SessionsHelper
   end
 
   def current_user
-    puts "current_user"
+    # puts "current_user"
     query = {}
     query[:remember_token] = cookies[:remember_token]
     query.merge!(@base_query)
     # @current_user ||= User.find_by_remember_token(cookies[:remember_token])
     @current_user ||= User.where(query).limit(1).first
-    puts "\ncurrent_user: #{@current_user}"
+    # puts "\ncurrent_user: #{@current_user}"
     @current_user
   end
 
@@ -31,9 +31,9 @@ module SessionsHelper
   end
 
   def require_login
-    puts "require_login"
-    puts "cookies #{cookies.to_json}"
-    puts "remember_token : #{cookies[:remember_token]}"
+    # puts "require_login"
+    # puts "cookies #{cookies.to_json}"
+    # puts "remember_token : #{cookies[:remember_token]}"
     if !signed_in?
       return render :json => {"message" => "Please Login"}, status: :temporary_redirect
     else

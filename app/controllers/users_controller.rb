@@ -18,7 +18,7 @@ class UsersController < ApplicationController
     if !user.save
       return render :json => {"messages" => user.errors.messages}, status: :bad_request
     end
-    puts "user: #{user.to_json}"
+    # puts "user: #{user.to_json}"
     render :json => {}
     # redirect_to controller: :session, action: :create
     #redirect_to signin_url, status: 303
@@ -26,9 +26,9 @@ class UsersController < ApplicationController
   end
 
   def current_user
-    puts "parameters: #{params}"
-    puts "cookies: #{cookies.to_json}"
-    puts "session : #{session}"
+    # puts "parameters: #{params}"
+    # puts "cookies: #{cookies.to_json}"
+    # puts "session : #{session}"
     query = {}
     query[:remember_token] = cookies[:remember_token]
     query.merge!(@base_query)
@@ -41,9 +41,9 @@ class UsersController < ApplicationController
   end
 
   def index
-    puts "parameters: #{params}"
-    puts "cookies: #{cookies.to_json}"
-    puts "session : #{session}"
+    # puts "parameters: #{params}"
+    # puts "cookies: #{cookies.to_json}"
+    # puts "session : #{session}"
     query = @base_query
     users = User.where(query).pluck(:name)
     return render :json => {"users" => users}

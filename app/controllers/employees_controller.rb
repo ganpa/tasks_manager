@@ -63,8 +63,8 @@ class EmployeesController < ApplicationController
       #e.location = Location.find(params[:location_id])
       e.location_id = params[:location_id]
     end
-    puts "employee #{emp.to_json}"
-    puts "employee valid: #{emp.valid?}"
+    # puts "employee #{emp.to_json}"
+    # puts "employee valid: #{emp.valid?}"
     if !emp.save
       return render :json => {"messages" => emp.errors.messages}, status: :bad_request
     end
