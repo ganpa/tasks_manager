@@ -94,9 +94,6 @@ class LocationsController < ApplicationController
       create_simple
     end
   end
-
-  
-
   
   def create_simple
     begin
@@ -105,13 +102,11 @@ class LocationsController < ApplicationController
       return render :json => {"message" => e.message}, status: :bad_request
     end
     # puts "location: #{location.to_json} is_valid: #{location.valid?}"
-    
     if !location.save
       return render :json => {"messages" => location.errors.messages}, status: :bad_request
     end
 
     render :json => {}
-
   end
 
   def location_save_error(location)
@@ -147,7 +142,6 @@ class LocationsController < ApplicationController
         cell = entries.first
         row = cell.coordinate.row
         next if row < 4
-
         entries.each_with_index do |cell, index|
           # puts "index: #{index}"
           next if index < 1
@@ -155,28 +149,20 @@ class LocationsController < ApplicationController
             location_hash = {:location_name => cell.value, :location_type => types[index], :parent_id => parent_ids[index]}
             location = create_location(location_hash)
             # puts "valid: #{location.valid?}, location: #{location.to_json}"
-
             if !location.save
               return location_save_error(location)
             end
             # puts "location: #{location.to_json}, valid: location.valid?"
-
             parent_ids[index+1] = location.id
             # parent_ids[index+1] = index
-
             col = cell.coordinate.column
             type = types[index]
-
             #puts "index: #{index}, cell: #{cell.value}, type: #{type}, row: #{cell.coordinate.row}, col: #{cell.coordinate.column}"
             # puts "hash: #{location_hash.to_json}"
-
           end
           # puts "\n\n cell: #{cell.coordinate.row}, #{cell.coordinate.column} = #{cell.value}"
         end
       end
-
-      # puts "\n\n\n"
-
     end
     render :json => {"message" => "uploaded file"}
   end
@@ -198,12 +184,10 @@ class LocationsController < ApplicationController
     end
 
     location = Location.new do |l|
-      l.name = location_hash[:location_name]
+      l.name = location_hash[:location_name].capitalize
       l.location_type = location_hash[:location_type]
       l.parent_id = location_hash[:parent_id]
     end
     location
   end
-
-
 end

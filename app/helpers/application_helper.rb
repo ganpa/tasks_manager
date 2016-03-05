@@ -10,7 +10,7 @@ module ApplicationHelper
   ADMIN = "admin"
 
   def current_account
-    res = request.host.split(".")
+    res = request.host.downcase!.split(".")
     # puts "res: #{res.to_json}"
     res.shift if !res.index(WWW).nil?
 
@@ -19,7 +19,7 @@ module ApplicationHelper
       return render :json => {"message" => "Something went wrong"}, status: :internal_server_error
     end
 
-    subdomain = res[0]
+    subdomain = res[0].downcase
 
     # return sub_domain_not_found("") if res.size > 4
     # if res.size > 3

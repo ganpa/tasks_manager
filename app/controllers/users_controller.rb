@@ -10,7 +10,7 @@ class UsersController < ApplicationController
 
     user = User.new do |u|
       u.account = @current_account
-      u.name = params[:name]
+      u.name = params[:name].downcase
       #u.email = params[:email]
       u.password = params[:password]
       u.password_confirmation = params[:password_confirmation]
@@ -22,7 +22,6 @@ class UsersController < ApplicationController
     render :json => {}
     # redirect_to controller: :session, action: :create
     #redirect_to signin_url, status: 303
-
   end
 
   def current_user

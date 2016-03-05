@@ -6,11 +6,11 @@ class AccountsController < ApplicationController
     #                           :location_name => account_hash["location_name"],
     #                           :parent_id => -1)
     location = Location.new do |l|
-      l.name = account_hash[:location_name]
+      l.name = account_hash[:location_name].capitalize
       l.location_type = account_hash[:location_type]
       l.parent_id = -1
     end
-    puts "location: #{location.inspect}, valid: #{location.valid?}"
+    # puts "location: #{location.inspect}, valid: #{location.valid?}"
 
     if !location.save
       return render :json => {"model" => "location","messages" => location.errors.messages}, status: :bad_request
@@ -18,12 +18,12 @@ class AccountsController < ApplicationController
 
 
     account = Account.new do |a|
-      a.name = account_hash[:name]
-      a.email = account_hash[:email]
+      a.name = account_hash[:name].downcase
+      a.email = account_hash[:email].downcase
       a.plan = "Free"
-      a.subdomain = account_hash[:subdomain]
+      a.subdomain = account_hash[:subdomain].downcase
       a.location_context = account_hash[:location_type]
-      a.location_name = account_hash[:location_name]
+      a.location_name = account_hash[:location_name].capitalize
       a.location_id = location.id
       a.language = "English"
     end
@@ -34,12 +34,12 @@ class AccountsController < ApplicationController
 
     user = User.new do |u|
       u.account_id = account.id
-      u.name = params[:user][:name]
+      u.name = params[:user][:name].downcase
       u.password = params[:user][:password]
       u.password_confirmation = params[:user][:password_confirmation]
     end
 
-    puts "user: #{user.to_json}, valid?: #{user.valid?}"
+    # puts "user: #{user.to_json}, valid?: #{user.valid?}"
 
     if !user.save
       return render :json => {"model" => "user", "messages" => user.errors.messages}, status: :bad_request
@@ -57,7 +57,7 @@ class AccountsController < ApplicationController
 
   def index
     if params.has_key?("subdomain")
-      account = Account.find_by_subdomain(params[:subdomain])
+      account = Account.find_by_subdomain(params[:subdomain].downcase)
       if !account.nil?
         return render :json => {"account" => account}
       else
@@ -76,7 +76,7 @@ class AccountsController < ApplicationController
       return render :json => {"message" => "Need subdomain name to check availability"}, status: :bad_request
     end
 
-    subdomain = request.query_parameters["subdomain"]
+    subdomain = request.query_parameters["subdomain"].downcase
     account_hash = Account.where(:subdomain => subdomain).limit(1).first
     if !account_hash.nil?
       return render :json => {"message" => "Subdomain '#{params[:subdomain]}' already taken"}, status: :bad_request

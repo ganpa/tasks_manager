@@ -60,7 +60,7 @@ class TasksController < ApplicationController
       t.account = @current_account
       t.number = number
       t.staff = params[:staff]
-      t.topic = params[:topic]
+      t.topic = params[:topic].capitalize
       t.file_nums = params[:file_nums]
       t.due_by = params[:due_by]
       t.is_completed = 0
@@ -76,7 +76,7 @@ class TasksController < ApplicationController
       else
         # puts "updating employee: #{emp_value.to_json}"
         employee = emp_value
-        employee.name = params[:employee][:name]
+        employee.name = params[:employee][:name].capitalize
       end
       # puts "employee: #{employee.to_json}, valid: #{employee.valid?}"
       if !employee.save
@@ -108,7 +108,6 @@ class TasksController < ApplicationController
     if !task.save
       return render :json => {"messages" => task.errors.messages}, status: :bad_request
     end
-
     #@task.update_attributes({:completed => true})
     #redirect_to  :action => :index#tasks_path
     redirect_to action: "index", status: 303

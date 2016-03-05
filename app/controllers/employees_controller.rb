@@ -6,10 +6,6 @@ class EmployeesController < ApplicationController
   before_filter :require_login
 
   def index
-    # if request.query_parameters.has_key?("location_name") && request.query_parameters["location_type"]
-    #   key = "employee"
-    #   value = filter_by_location_name_and_type(request.query_parameters["location_name"],
-    #                                             request.query_parameters["location_type"])
     if request.query_parameters.has_key?("location_id")
       key = "employee"
       value = Employee.find_by_location_id(request.query_parameters["location_id"])
@@ -30,11 +26,6 @@ class EmployeesController < ApplicationController
     render :json => {"employee" => emp}
   end
 
-  def filter_by_location_name_and_type(location_name, location_type)
-    location = Location.where("location_name = ? AND location_type = ?", location_name, location_type)
-    Employee.where(location_id: location)
-  end
-
   def positions
     if request.query_parameters.has_key?("location_type")
       key = "position"
@@ -49,7 +40,7 @@ class EmployeesController < ApplicationController
   def create
     employee = Employee.find_by_location_id(params[:location_id])
     if !employee.nil?
-      employee.name = params[:name]
+      employee.name = params[:name].capitalize
       if !employee.save
         return render :json => {"messages" => employee.errors.messages}, status: :bad_request
       end
@@ -57,7 +48,7 @@ class EmployeesController < ApplicationController
     end
     
     emp = Employee.new do |e|
-      e.name = params[:name]
+      e.name = params[:name].capitalize
       e.position = params[:position]
       e.account_id = @current_account.id
       #e.location = Location.find(params[:location_id])
