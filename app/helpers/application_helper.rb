@@ -10,7 +10,7 @@ module ApplicationHelper
   ADMIN = "admin"
 
   def current_account
-    res = request.host.downcase!.split(".")
+    res = request.host.downcase.split(".")
     # puts "res: #{res.to_json}"
     res.shift if !res.index(WWW).nil?
 
